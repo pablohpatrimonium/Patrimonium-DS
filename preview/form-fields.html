@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Form fields</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 20px; background: #fff; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .lbl { font: 600 12px/1 var(--font-sans); color: var(--fg-1); text-transform: uppercase; letter-spacing: 0.06em; }
+  .inp { font: 400 16px/1 var(--font-sans); padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 8px; outline: none; color: var(--fg-1); background: #fff; }
+  .inp::placeholder { color: var(--fg-muted); }
+  .inp.focus { border-color: var(--brand-navy); box-shadow: var(--shadow-focus); }
+  .inp.error { border-color: var(--danger); }
+  .err { font: 500 12px/1 var(--font-sans); color: var(--danger); }
+</style></head><body>
+  <div class="field"><label class="lbl">CNPJ</label><input class="inp" value="123.456.78/0001-90"></div>
+  <div class="field"><label class="lbl">Empresa</label><input class="inp" placeholder="Razão social"></div>
+  <div class="field"><label class="lbl">E-mail</label><input class="inp focus" value="pabloh@patrimoniumcontabilidade.com.br"></div>
+  <div class="field"><label class="lbl">Senha</label><input class="inp error" type="password" value="•••"><span class="err">Mínimo 8 caracteres</span></div>
+</body></html>

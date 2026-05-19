@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Changelog · v1.0.0</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 26px 32px 40px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+    .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 26px; }
+    .head .title { font: 700 22px/1 var(--font-display); letter-spacing: -0.01em; }
+    .head .sub   { font: 400 13px/1.45 var(--font-sans); color: var(--neutral-strong); max-width: 720px; }
+
+    .semver {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-bottom: 26px;
+    }
+    .semver .item {
+      padding: 14px 16px;
+      background: var(--neutral-surface);
+      border-radius: 16px;
+    }
+    .semver .item b { display: block; font: 700 11px/1 var(--font-mono); color: var(--fg-1); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .semver .item code { font: 600 14px/1 var(--font-mono); color: var(--brand-navy); }
+    .semver .item span { display: block; font: 400 12px/1.45 var(--font-sans); color: var(--neutral-strong); margin-top: 6px; }
+
+    .version {
+      border: 1px solid var(--neutral-light);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      margin-bottom: 14px;
+    }
+    .v-head {
+      padding: 18px 22px;
+      background: var(--brand-navy);
+      color: #fff;
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    .v-head .tag { font: 800 22px/1 var(--font-display); color: #fff; }
+    .v-head .date { font: 500 12px/1 var(--font-mono); color: var(--brand-green); letter-spacing: 0.04em; text-transform: uppercase; }
+    .v-head .sum { margin-left: auto; font: 400 13px/1.4 var(--font-sans); color: #C8C8CC; max-width: 460px; text-align: right; }
+    .v-body { padding: 18px 22px; }
+    .v-body h4 {
+      margin: 0 0 8px;
+      font: 700 11px/1 var(--font-mono);
+      color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .v-body h4::before {
+      content: ""; width: 6px; height: 6px; border-radius: 999px;
+      background: var(--success);
+    }
+    .v-body h4.dec::before { background: var(--brand-navy); }
+    .v-body h4.kno::before { background: var(--warning); }
+    .v-body ul {
+      margin: 0 0 22px; padding-left: 18px;
+      font: 400 13px/1.55 var(--font-sans);
+      color: var(--fg-2);
+    }
+    .v-body ul li { margin-bottom: 3px; }
+    .v-body ul li b { color: var(--fg-1); font-weight: 600; }
+    .v-body code { font-family: var(--font-mono); font-size: 12px; color: var(--brand-navy); background: var(--info-bg); padding: 1px 5px; border-radius: 4px; }
+
+    /* ====================== PRINT ====================== */
+    @media print {
+      @page { size: A4 portrait; margin: 14mm; }
+
+      html, body { background: #fff; }
+      body {
+        margin: 0; padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+      }
+
+      /* Mantém as cores semânticas (background do header da versão, dots, info-bg dos codes etc.) */
+      .v-head, .semver .item, .v-body code, .v-body h4::before {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .head { margin-bottom: 16px; }
+      .head .title { font-size: 20px; }
+      .head .sub { font-size: 11px; }
+
+      .semver { gap: 8px; margin-bottom: 18px; }
+      .semver .item { padding: 10px 12px; break-inside: avoid; }
+      .semver .item b { font-size: 10px; }
+      .semver .item code { font-size: 12px; }
+      .semver .item span { font-size: 10.5px; }
+
+      .version { break-inside: avoid; }
+      .v-head { padding: 14px 18px; }
+      .v-head .tag { font-size: 20px; }
+      .v-head .date { font-size: 11px; }
+      .v-head .sum { font-size: 11px; max-width: 360px; }
+
+      .v-body { padding: 14px 18px; }
+      .v-body h4 { font-size: 10px; margin: 0 0 6px; }
+      .v-body ul { margin: 0 0 14px; font-size: 11px; line-height: 1.45; padding-left: 16px; }
+      .v-body ul li { margin-bottom: 2px; break-inside: avoid; }
+      .v-body code { font-size: 10.5px; }
+
+      /* sem animações, sem hover, sem overflow oculto */
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .version { overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="head">
+  <span class="title">Changelog</span>
+  <span class="sub">Histórico do Patrimonium DS. Versionamento semântico: major/minor/patch.</span>
+</div>
+
+<div class="semver">
+  <div class="item">
+    <b>Major</b>
+    <code>1.0 → 2.0</code>
+    <span>Mudança que quebra compatibilidade (ex: renomear todos os tokens).</span>
+  </div>
+  <div class="item">
+    <b>Minor</b>
+    <code>1.0 → 1.1</code>
+    <span>Novo componente ou nova regra sem quebrar existente.</span>
+  </div>
+  <div class="item">
+    <b>Patch</b>
+    <code>1.0.0 → 1.0.1</code>
+    <span>Correção de bug ou inconsistência.</span>
+  </div>
+</div>
+
+<!-- v1.0.0 -->
+<div class="version">
+  <div class="v-head">
+    <span class="tag">v1.0.0</span>
+    <span class="date">maio 2026</span>
+    <span class="sum">Primeira versão pública do Patrimonium Design System.</span>
+  </div>
+  <div class="v-body">
+    <h4>Adicionado</h4>
+    <ul>
+      <li><b>Foundations</b> — Colors (Brand + Apoio + Semantic com <code>-bg</code>), Typography (RNS Sanz, 10 estilos), Spacing (11 tokens), Radii (escala + exceção mini-controle), Shadows (3 níveis), Grid (5 breakpoints, mobile-first), Iconografia (Lucide, stroke 1.5px, 4 tamanhos), Acessibilidade (Contraste WCAG + 6 camadas estruturais).</li>
+      <li><b>Atoms</b> — Button (5 variants × 3 sizes × 6 estados), Form fields, Form controls (Checkbox/Radio/Switch com radius 4px exceção), Badge & Pills, Avatar (5 tamanhos + status + stack), Tooltip (4 posições).</li>
+      <li><b>Components</b> — Card (KPI + Documento), Tabs (underline + pill), Pagination, Loading states (Skeleton + Spinner + Progress), Empty state, Alerts & Banners (inline + banner + toast), Data Table (3 densidades, 8 tipos de célula, estados especiais), Modal & Drawer (4 sizes + confirm + drawer + sheet), Page Header (5 variantes + breadcrumb), Search Input (3 variantes + dropdown), Date picker (single + range + presets), File upload (dropzone + lista + validação + 3 variantes).</li>
+      <li><b>Navigation</b> — Sidebar (3 estados), Topbar, Notification dropdown, Avatar dropdown.</li>
+      <li><b>Brand</b> — Logo light & dark, P-cápsula, Branded House Arquitetura, Voice & Microcopy.</li>
+      <li><b>Templates</b> — App Dashboard (Light + Dark), 404, 500.</li>
+      <li><b>Documentação</b> — Motion, Voice expandido, Acessibilidade plena, Princípios escritos, Como contribuir, Tokens export.</li>
+    </ul>
+
+    <h4 class="dec">Decisões fechadas</h4>
+    <ul>
+      <li><b>Hover = Focus visualmente</b> em todo o sistema (extensão da regra WCAG: focus precisa ser visível, não diferente de hover).</li>
+      <li><b>Paleta sem subtons</b> (100/300/500/700/900).</li>
+      <li><b>Naming técnico em EN</b>, microcopy em PT-BR.</li>
+      <li><b>Pill reservado</b> a affirmative + primary lg institucional.</li>
+      <li><b>Radius 4px</b> como exceção para mini-controles (≤ 20px).</li>
+      <li><b>Opacity removida</b> como foundation; tokens migrados para componentes (<code>backdrop/modal</code>, <code>focus-ring</code>, <code>menu-hover</code>).</li>
+      <li><b>Auditoria 0.2.1</b> — consolidação de <code>--neutral-line</code>, <code>--neutral-muted</code>, <code>--brand-neutral-light</code> em <code>--neutral-light</code>; ajustes pontuais de radius fora da escala aplicados nos frames afetados.</li>
+    </ul>
+
+    <h4 class="kno">Conhecido · registrado para v1.1</h4>
+    <ul>
+      <li><b>Capitalização das 8 sub-marcas</b> pendente de decisão de marketing (<code>patrimonium news</code> vs <code>Patrimonium News</code>, <code>radar</code> vs <code>Radar</code>).</li>
+      <li><b>Loader com identidade Patrimonium</b> — substituir spinner genérico por elemento da marca.</li>
+      <li><b>Empty states adicionais</b> — sem permissão, sem conexão, error state.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  (async function autoprint() {
+    try {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+    } catch (e) {}
+    setTimeout(function () { window.print(); }, 500);
+  })();
+</script>
+
+</body>
+</html>

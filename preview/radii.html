@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Radii</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 22px; background: #fff; display: flex; gap: 22px; align-items: flex-end; font-family: var(--font-sans); }
+  .item { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .rect { width: 120px; height: 72px; background: var(--brand-blue, #1A3375); }
+  .name { font: 600 12px/1 var(--font-mono); color: var(--fg-1); }
+  .val  { font: 500 11px/1 var(--font-mono); color: var(--fg-3); }
+  .use  { font: 400 11px/1.3 var(--font-sans); color: var(--fg-3); text-align: center; max-width: 130px; }
+</style></head><body>
+  <div class="item">
+    <div class="rect" style="border-radius:8px"></div>
+    <span class="name">radius/sm</span><span class="val">8px</span>
+    <span class="use">badges, chips, inputs, botões</span>
+  </div>
+  <div class="item">
+    <div class="rect" style="border-radius:16px"></div>
+    <span class="name">radius/md</span><span class="val">16px</span>
+    <span class="use">cards, modais, painéis</span>
+  </div>
+  <div class="item">
+    <div class="rect" style="border-radius:32px"></div>
+    <span class="name">radius/lg</span><span class="val">32px</span>
+    <span class="use">hero, sheets, banners</span>
+  </div>
+  <div class="item">
+    <div class="rect" style="border-radius:999px"></div>
+    <span class="name">radius/pill</span><span class="val">999px</span>
+    <span class="use">botão affirmative, dots, logo</span>
+  </div>
+</body></html>

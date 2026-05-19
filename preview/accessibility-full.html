@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Acessibilidade plena · 6 camadas</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 24px 28px 40px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+    .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 24px; }
+    .head .title { font: 700 22px/1 var(--font-display); letter-spacing: -0.01em; }
+    .head .sub   { font: 400 13px/1.45 var(--font-sans); color: var(--neutral-strong); max-width: 720px; }
+    .head .ref   { font: 500 12px/1.4 var(--font-mono); color: var(--brand-navy); margin-top: 6px; }
+
+    .cards { display: flex; flex-direction: column; gap: 14px; }
+    .card {
+      display: grid; grid-template-columns: 56px 1fr 280px; gap: 18px;
+      border: 1px solid var(--neutral-light);
+      border-radius: 16px;
+      padding: 18px 20px;
+      background: #fff;
+    }
+    .card .n { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; background: var(--brand-navy); color: #fff; font: 800 18px/1 var(--font-display); }
+    .card h3 { margin: 0 0 6px; font: 600 17px/1.3 var(--font-display); color: var(--fg-1); }
+    .card ul { margin: 0; padding-left: 18px; font: 400 13px/1.55 var(--font-sans); color: var(--neutral-strong); }
+    .card ul li { margin-bottom: 2px; }
+    .card .demo {
+      background: var(--neutral-surface);
+      border-radius: 16px;
+      padding: 14px;
+      display: grid; place-items: center;
+      font: 500 12px/1.4 var(--font-sans);
+      color: var(--neutral-strong);
+      text-align: center;
+    }
+
+    /* DEMOS ESPECÍFICOS POR CAMADA */
+    /* heading hierarchy */
+    .heads { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+    .heads > div { display: flex; align-items: baseline; gap: 6px; font-family: var(--font-display); color: var(--fg-1); }
+    .heads .tag { font: 600 9px/1 var(--font-mono); padding: 2px 5px; border-radius: 4px; background: var(--brand-navy); color: #fff; }
+    .heads .ok span.tag { background: var(--success); }
+    .heads .h1 { font-size: 22px; font-weight: 700; }
+    .heads .h2 { font-size: 18px; font-weight: 700; }
+    .heads .h3 { font-size: 14px; font-weight: 600; }
+
+    /* focus order */
+    .focus-demo { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; justify-content: center; }
+    .focus-demo .el { background: #fff; border: 1px solid var(--neutral-light); border-radius: 8px; padding: 6px 10px; font: 600 11px/1 var(--font-mono); position: relative; }
+    .focus-demo .el .seq { position: absolute; top: -8px; left: -8px; width: 18px; height: 18px; border-radius: 999px; background: var(--brand-navy); color: #fff; font: 700 10px/18px var(--font-mono); text-align: center; }
+
+    /* aria */
+    .aria-demo { display: flex; flex-direction: column; gap: 6px; align-items: stretch; width: 100%; }
+    .aria-demo .row { display: flex; gap: 8px; align-items: center; }
+    .aria-demo .icon-only { width: 32px; height: 32px; border-radius: 8px; background: var(--brand-navy); color: #fff; display: grid; place-items: center; }
+    .aria-demo .icon-only svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .aria-demo code { font: 500 10px/1.4 var(--font-mono); color: var(--brand-navy); background: #fff; padding: 4px 6px; border-radius: 4px; }
+
+    /* hit area */
+    .hit-demo {
+      width: 88px; height: 88px;
+      display: grid; place-items: center;
+      position: relative;
+    }
+    .hit-demo .hit { position: absolute; inset: 0; border: 1px dashed var(--brand-navy); border-radius: 8px; }
+    .hit-demo .hit::after {
+      content: "44 × 44"; position: absolute; top: -18px; right: 0;
+      font: 600 9px/1 var(--font-mono); color: var(--brand-navy); letter-spacing: 0.06em;
+    }
+    .hit-demo .ic {
+      width: 16px; height: 16px;
+      background: var(--brand-navy); border-radius: 4px;
+      position: relative; z-index: 1;
+    }
+
+    /* toast timing */
+    .toast-demo {
+      width: 100%;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .toast-demo .toast {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px; border-radius: 8px;
+      background: var(--brand-navy-deep); color: #fff;
+      font: 500 11px/1.3 var(--font-sans);
+    }
+    .toast-demo .toast .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--brand-green); flex-shrink: 0; }
+    .toast-demo .toast .ts { margin-left: auto; font-family: var(--font-mono); font-size: 9px; color: var(--brand-neutral-dark); opacity: 0.7; }
+
+    /* motion */
+    .motion-demo { display: flex; gap: 10px; align-items: center; }
+    .motion-demo .pref {
+      font: 500 11px/1.3 var(--font-sans); color: var(--neutral-strong);
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .motion-demo .pref b { font: 700 11px/1 var(--font-mono); color: var(--fg-1); letter-spacing: 0.04em; text-transform: uppercase; }
+    .motion-demo .box {
+      width: 56px; height: 56px;
+      background: var(--brand-navy); border-radius: 8px;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    .motion-demo .box.reduced { animation: none; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+  </style>
+</head>
+<body>
+
+<div class="head">
+  <span class="title">Acessibilidade plena · 6 camadas</span>
+  <span class="sub">Camadas estruturais que complementam o card de contraste WCAG existente. Hierarquia, foco, ARIA, hit area, tempo de toast e movimento.</span>
+  <span class="ref">→ ver também <code>Colors · Acessibilidade WCAG</code> para a tabela de contraste</span>
+</div>
+
+<div class="cards">
+
+  <!-- 1 — HIERARQUIA -->
+  <div class="card">
+    <span class="n">01</span>
+    <div>
+      <h3>Hierarquia de heading</h3>
+      <ul>
+        <li>Um único <code>H1</code> por tela (regra inviolável).</li>
+        <li><code>H2</code>, <code>H3</code>, <code>H4</code> podem se repetir.</li>
+        <li>Não pular níveis — não usar <code>H3</code> sem <code>H2</code> antes.</li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="heads">
+        <div class="h1 ok">Recuperação tributária <span class="tag">H1</span></div>
+        <div class="h2">Últimos relatórios <span class="tag">H2</span></div>
+        <div class="h3">Q1 2026 <span class="tag">H3</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 — FOCUS ORDER -->
+  <div class="card">
+    <span class="n">02</span>
+    <div>
+      <h3>Focus order</h3>
+      <ul>
+        <li>Tab segue ordem visual lógica (topo → baixo, esquerda → direita).</li>
+        <li>Modais aprisionam o focus (Tab não sai do overlay).</li>
+        <li>Ao fechar modal, focus volta ao elemento que abriu.</li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="focus-demo">
+        <span class="el"><span class="seq">1</span>Empresa</span>
+        <span class="el"><span class="seq">2</span>CNPJ</span>
+        <span class="el"><span class="seq">3</span>Salvar</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 — ARIA LABELS -->
+  <div class="card">
+    <span class="n">03</span>
+    <div>
+      <h3>Aria labels</h3>
+      <ul>
+        <li>Ícones isolados precisam de <code>aria-label</code>.</li>
+        <li>Botões icon-only com label descritivo ("Excluir registro", não "Botão").</li>
+        <li>Inputs precisam de <code>&lt;label&gt;</code> associado — não placeholder como label.</li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="aria-demo">
+        <div class="row"><span class="icon-only"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14H7L5 6"/><path d="M10 11v6M14 11v6"/></svg></span><code>aria-label="Excluir registro"</code></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 — HIT AREA -->
+  <div class="card">
+    <span class="n">04</span>
+    <div>
+      <h3>Tamanho mínimo de toque</h3>
+      <ul>
+        <li>44 × 44 px em qualquer elemento interativo (Button md é a referência).</li>
+        <li>Ícones pequenos (16 px) precisam de área de hit expandida com padding invisível.</li>
+        <li>Vale também para checkbox indicator, dot de status, kebab, close.</li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="hit-demo">
+        <div class="hit"></div>
+        <div class="ic"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 — TOAST TIMING -->
+  <div class="card">
+    <span class="n">05</span>
+    <div>
+      <h3>Tempo mínimo de toast</h3>
+      <ul>
+        <li><b>5 segundos</b> para mensagens simples.</li>
+        <li><b>8 segundos</b> para mensagens com ação.</li>
+        <li>Toasts pausam timer ao hover (usuário lendo).</li>
+        <li>Botão de fechar <code>X</code> sempre presente.</li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="toast-demo">
+        <div class="toast"><span class="dot"></span>Lançamento criado<span class="ts">5s</span></div>
+        <div class="toast"><span class="dot"></span>Recuperação aprovada · Ver<span class="ts">8s</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 — MOVIMENTO -->
+  <div class="card">
+    <span class="n">06</span>
+    <div>
+      <h3>Movimento e animação</h3>
+      <ul>
+        <li>Respeitar <code>prefers-reduced-motion</code> do sistema.</li>
+        <li>Nenhuma animação em loop infinito automática — exceto loaders enquanto há estado "carregando".</li>
+        <li>Nenhum flash mais de 3× por segundo.</li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="motion-demo">
+        <div class="box"></div>
+        <span class="pref"><b>default</b>animação ativa</span>
+        <div class="box reduced"></div>
+        <span class="pref"><b>reduced</b>animação cessa</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

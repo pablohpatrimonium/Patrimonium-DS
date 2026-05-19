@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Template · 404</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: #FFFFFF;
+      font-family: var(--font-sans);
+      color: var(--brand-navy);
+    }
+
+    /* Logo / seal Patrimonium no topo da tela */
+    .topbar {
+      position: absolute; top: 28px; left: 32px;
+      display: inline-flex; align-items: center; gap: 10px;
+      font: 700 18px/1 var(--font-display);
+      color: var(--brand-navy);
+    }
+    .seal {
+      position: relative;
+      width: 32px; height: 32px; border-radius: 999px;
+      background: var(--brand-navy);
+      display: grid; place-items: center;
+    }
+    .seal::after {
+      content: ""; width: 14px; height: 6px;
+      border-radius: 999px;
+      background: var(--brand-green);
+    }
+
+    .stage {
+      min-height: 100vh;
+      display: grid; place-items: center;
+      padding: 80px 28px 60px;
+      box-sizing: border-box;
+    }
+    .frame {
+      max-width: 480px; width: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+    }
+
+    /* "404" — escala Display (RNS Sanz ExtraBold 800), 96px conforme spec da Fase P */
+    .num {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 96px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--brand-navy);
+    }
+
+    /* H1 — token --fs-h1 (40/700/1.1/-0.01em) */
+    h1 {
+      margin: 32px 0 0;
+      font: var(--fw-h1) var(--fs-h1)/var(--lh-h1) var(--font-display);
+      letter-spacing: var(--tracking-h1);
+      color: var(--brand-navy);
+    }
+
+    /* Body — token --fs-md (16/400/1.5) · cor semântica --neutral conforme spec */
+    .lead {
+      margin: 16px 0 0;
+      font: var(--fw-md) var(--fs-md)/var(--lh-md) var(--font-sans);
+      color: var(--neutral);
+      text-wrap: pretty;
+    }
+
+    /* Buttons · instâncias do componente Button/md (44px h, SemiBold 600, radius 8) */
+    .actions {
+      display: flex; gap: 12px;
+      margin-top: 32px;
+      justify-content: center; align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font: 600 16px/1 var(--font-sans);
+      border: 1.5px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      height: 44px;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: background 150ms;
+    }
+    .btn.primary {
+      background: var(--brand-navy); color: #FFFFFF;
+      padding: 0 24px;
+    }
+    .btn.primary:hover { background: #122555; }
+    .btn.primary:focus { outline: none; box-shadow: var(--focus-ring); }
+
+    .btn.ghost {
+      background: transparent; color: var(--brand-navy);
+      padding: 0 16px;
+    }
+    .btn.ghost:hover { background: var(--neutral-surface); }
+    .btn.ghost:focus { outline: none; box-shadow: var(--focus-ring); }
+  </style>
+</head>
+<body>
+
+<span class="topbar"><span class="seal"></span>patrimonium</span>
+
+<div class="stage">
+  <div class="frame">
+    <p class="num">404</p>
+    <h1>Página não encontrada</h1>
+    <p class="lead">O endereço que você acessou não existe ou foi movido. Confira o link ou volte para a página inicial.</p>
+    <div class="actions">
+      <button class="btn primary">Voltar para Dashboard</button>
+      <button class="btn ghost">Reportar problema</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

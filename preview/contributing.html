@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Como contribuir</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 26px 32px 40px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+    .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 26px; }
+    .head .title { font: 700 22px/1 var(--font-display); letter-spacing: -0.01em; }
+    .head .sub   { font: 400 13px/1.45 var(--font-sans); color: var(--neutral-strong); max-width: 720px; }
+
+    .section { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+    .section h3 {
+      margin: 0 0 4px;
+      font: 700 11px/1 var(--font-mono);
+      color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section h3 .n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 999px; background: var(--brand-navy); color: #fff; font-weight: 700; }
+    .section h4 { margin: 0 0 8px; font: 700 22px/1.2 var(--font-display); color: var(--fg-1); }
+    .section ul { margin: 0; padding-left: 18px; font: 400 14px/1.55 var(--font-sans); color: var(--neutral-strong); }
+    .section ul li { margin-bottom: 4px; }
+    .section ul li b { color: var(--fg-1); font-weight: 600; }
+
+    /* flowchart */
+    .flow {
+      display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .step {
+      flex: 1; min-width: 180px;
+      border: 1px solid var(--neutral-light);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+      display: flex; flex-direction: column; gap: 8px;
+      position: relative;
+    }
+    .step .num {
+      display: inline-grid; place-items: center;
+      width: 28px; height: 28px; border-radius: 999px;
+      background: var(--info-bg); color: var(--brand-navy);
+      font: 800 14px/1 var(--font-display);
+    }
+    .step b { font: 600 13px/1.3 var(--font-sans); color: var(--fg-1); }
+    .step span { font: 400 12px/1.45 var(--font-sans); color: var(--neutral-strong); }
+    .step:not(:last-child)::after {
+      content: "→";
+      position: absolute; top: 50%; right: -14px;
+      font: 700 16px/1 var(--font-mono);
+      color: var(--brand-neutral-dark);
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .principle-block {
+      padding: 18px 22px;
+      background: var(--info-bg);
+      border-radius: 16px;
+      font: 500 14px/1.5 var(--font-sans);
+      color: var(--brand-navy);
+    }
+    .principle-block b { color: var(--fg-1); font-weight: 700; }
+    .principle-block ul { margin: 8px 0 0; padding-left: 18px; }
+  </style>
+</head>
+<body>
+
+<div class="head">
+  <span class="title">Como contribuir</span>
+  <span class="sub">Processo de proposição e aprovação de mudanças no Patrimonium DS.</span>
+</div>
+
+<!-- 1 -->
+<div class="section">
+  <h3><span class="n">1</span> Quando propor mudança</h3>
+  <ul>
+    <li><b>Novo componente</b> que cobre uma necessidade recorrente em ≥ 3 telas.</li>
+    <li><b>Novo token</b> (cor, spacing, tipografia) quando o uso é estrutural, não pontual.</li>
+    <li><b>Nova regra ou exceção</b> que estende o sistema sem contradizer princípios.</li>
+    <li><b>Correção de inconsistência</b> identificada em auditoria ou uso.</li>
+  </ul>
+</div>
+
+<!-- 2 -->
+<div class="section">
+  <h3><span class="n">2</span> Quem aprova</h3>
+  <ul>
+    <li><b>Owner do DS</b> — responsável pela coerência do sistema. Aprova mudanças que tocam foundations, atoms, princípios.</li>
+    <li><b>Designer proponente</b> — defende a proposta com casos de uso reais e exemplos.</li>
+    <li><b>Aprovação rápida</b> em correções (patch); <b>aprovação em revisão</b> em mudanças de minor ou major.</li>
+  </ul>
+</div>
+
+<!-- 3 — Flowchart -->
+<div class="section">
+  <h3><span class="n">3</span> Processo</h3>
+  <div class="flow">
+    <div class="step">
+      <div class="num">1</div>
+      <b>Propor</b>
+      <span>Designer ou dev abre proposta no canal oficial com caso de uso real e exemplos.</span>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <b>Avaliar</b>
+      <span>Owner avalia em ciclo definido — semanal para patches, quinzenal para minor/major.</span>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <b>Decidir</b>
+      <span>Aceitar · Recusar · Aprofundar. Decisões registradas no Changelog com justificativa.</span>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <b>Implementar</b>
+      <span>Aceitas viram parte do roadmap da próxima versão. Recusadas ficam documentadas.</span>
+    </div>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="section">
+  <h3><span class="n">4</span> Princípio orientador</h3>
+  <div class="principle-block">
+    <b>Preferir restrição a expansão.</b>
+    <ul>
+      <li>Antes de adicionar um componente, perguntar se um existente cobre.</li>
+      <li>Antes de criar token novo, perguntar se um adjacente serve.</li>
+      <li>Sistema bom é o que diz "não" mais vezes do que diz "sim".</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

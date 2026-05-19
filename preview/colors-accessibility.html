@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Colors · Acessibilidade WCAG</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  :root {
+    --c-white:  #FFFFFF;
+    --c-blue:   #1A3375;  /* Patrimonium Blue */
+    --c-navy:   #0B1B3F;  /* Navy escuríssimo */
+    --c-navym:  #3059AF;  /* Navy médio */
+    --c-teal:   #0C998F;  /* Teal */
+    --c-cyan:   #1AFFFF;  /* Ciano luminoso */
+    --c-green:  #00FCA8;  /* Patrimonium Green */
+    --c-dark:   #3D3D3D;  /* Neutro escuro */
+    --c-light:  #C8C8CC;  /* Neutro claro */
+  }
+  body { margin: 0; padding: 28px 32px 32px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+
+  .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+  .head .title { font: 700 22px/1 var(--font-display); letter-spacing: -0.01em; }
+  .head .sub   { font: 400 13px/1.45 var(--font-sans); color: var(--neutral-light); max-width: 680px; }
+
+  .group-title {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 22px 0 12px;
+  }
+  .group-title b { font: 700 12px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-1); }
+  .group-title span { font: 400 12px/1.3 var(--font-sans); color: var(--neutral-light); }
+
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+
+  /* Pair card — fg color demonstrated on bg color */
+  .pair {
+    position: relative;
+    border-radius: 16px;
+    padding: 18px 18px 14px;
+    min-height: 96px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.08);
+  }
+  .pair .ratio { font: 800 34px/1 var(--font-display); letter-spacing: -0.02em; }
+  .pair .meta  { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 6px; }
+  .pair .pair-name { font: 600 10px/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.8; }
+  .pair .tag {
+    font: 700 9px/1 var(--font-mono); letter-spacing: 0.08em;
+    padding: 4px 7px; border-radius: 999px;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid currentColor;
+  }
+  .pair.on-light .tag { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.25); }
+
+  /* FAIL group — alternate look */
+  .fail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .fail {
+    position: relative;
+    border-radius: 16px;
+    padding: 16px 18px;
+    min-height: 110px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(185, 28, 28, 0.18);
+    overflow: hidden;
+  }
+  .fail::after {
+    /* diagonal prohibition stroke */
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(to top right,
+      transparent 0, transparent calc(50% - 1px),
+      rgba(185, 28, 28, 0.55) calc(50% - 1px),
+      rgba(185, 28, 28, 0.55) calc(50% + 1px),
+      transparent calc(50% + 1px), transparent 100%);
+    pointer-events: none;
+  }
+  .fail .row1 { display: flex; align-items: center; justify-content: space-between; gap: 10px; z-index: 1; }
+  .fail .demo {
+    font: 700 22px/1 var(--font-display); letter-spacing: -0.01em;
+    padding: 10px 14px; border-radius: 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .fail .ban {
+    color: #B91C1C; font: 700 11px/1 var(--font-mono);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .fail .ban svg { width: 14px; height: 14px; }
+  .fail .ratio-fail { font: 800 22px/1 var(--font-display); color: #B91C1C; letter-spacing: -0.01em; }
+  .fail .pair-name { font: 600 10px/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-3); margin-top: 8px; z-index: 1; }
+  .fail .why { font: 400 11px/1.4 var(--font-sans); color: var(--fg-3); margin-top: 4px; z-index: 1; }
+
+  .footer {
+    margin-top: 22px; padding: 14px 16px;
+    background: var(--neutral-surface); border-radius: 12px;
+    font: 400 12px/1.55 var(--font-sans); color: var(--fg-3);
+  }
+  .footer b { color: var(--fg-1); font-weight: 700; }
+</style></head><body>
+
+<div class="head">
+  <span class="title">Cores · Acessibilidade</span>
+  <span class="sub">Combinações testadas contra WCAG 2.1. Cada par mostra o ratio de contraste real, classificação e exemplo legível.</span>
+</div>
+
+<!-- GROUP 1 — AAA ≥ 7.0 ------------------------------------------------ -->
+<div class="group-title"><b>Grupo 1 · AAA</b><span>ratio ≥ 7.0 — acessível para qualquer texto</span></div>
+<div class="grid">
+
+  <div class="pair on-light" style="background:#FFFFFF; color:#0B1B3F; border:1px solid #E2E6F1;">
+    <div class="ratio">16.90</div>
+    <div class="meta"><span class="pair-name">Branco / Navy escuríssimo</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#0B1B3F; color:#1AFFFF;">
+    <div class="ratio">13.51</div>
+    <div class="meta"><span class="pair-name">Ciano / Navy escuríssimo</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#0B1B3F; color:#00FCA8;">
+    <div class="ratio">12.46</div>
+    <div class="meta"><span class="pair-name">Green / Navy escuríssimo</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#1A3375; color:#FFFFFF;">
+    <div class="ratio">11.84</div>
+    <div class="meta"><span class="pair-name">Branco / Patrimonium Blue</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#3D3D3D; color:#FFFFFF;">
+    <div class="ratio">10.86</div>
+    <div class="meta"><span class="pair-name">Branco / Neutro escuro</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#0B1B3F; color:#C8C8CC;">
+    <div class="ratio">10.13</div>
+    <div class="meta"><span class="pair-name">Neutro claro / Navy escuríssimo</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#1A3375; color:#1AFFFF;">
+    <div class="ratio">9.46</div>
+    <div class="meta"><span class="pair-name">Ciano / Patrimonium Blue</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#1A3375; color:#00FCA8;">
+    <div class="ratio">8.73</div>
+    <div class="meta"><span class="pair-name">Green / Patrimonium Blue</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#1AFFFF; color:#3D3D3D;">
+    <div class="ratio">8.69</div>
+    <div class="meta"><span class="pair-name">Neutro escuro / Ciano</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#00FCA8; color:#3D3D3D;">
+    <div class="ratio">8.01</div>
+    <div class="meta"><span class="pair-name">Neutro escuro / Green</span><span class="tag">AAA</span></div>
+  </div>
+
+  <div class="pair" style="background:#1A3375; color:#C8C8CC;">
+    <div class="ratio">7.10</div>
+    <div class="meta"><span class="pair-name">Neutro claro / Patrimonium Blue</span><span class="tag">AAA</span></div>
+  </div>
+
+</div>
+
+<!-- GROUP 2 — AA 4.5–7.0 ----------------------------------------------- -->
+<div class="group-title"><b>Grupo 2 · AA</b><span>ratio entre 4.5 e 7.0 — acessível para texto normal</span></div>
+<div class="grid">
+
+  <div class="pair on-light" style="background:#FFFFFF; color:#3059AF; border:1px solid #E2E6F1;">
+    <div class="ratio">6.62</div>
+    <div class="meta"><span class="pair-name">Navy médio / Branco</span><span class="tag">AA</span></div>
+  </div>
+
+  <div class="pair" style="background:#3D3D3D; color:#C8C8CC;">
+    <div class="ratio">6.51</div>
+    <div class="meta"><span class="pair-name">Neutro claro / Neutro escuro</span><span class="tag">AA</span></div>
+  </div>
+
+  <div class="pair" style="background:#3059AF; color:#1AFFFF;">
+    <div class="ratio">5.29</div>
+    <div class="meta"><span class="pair-name">Ciano / Navy médio</span><span class="tag">AA</span></div>
+  </div>
+
+  <div class="pair" style="background:#00FCA8; color:#3059AF;">
+    <div class="ratio">4.88</div>
+    <div class="meta"><span class="pair-name">Navy médio / Green</span><span class="tag">AA</span></div>
+  </div>
+
+  <div class="pair" style="background:#0B1B3F; color:#0C998F;">
+    <div class="ratio">4.80</div>
+    <div class="meta"><span class="pair-name">Teal / Navy escuríssimo</span><span class="tag">AA</span></div>
+  </div>
+
+</div>
+
+<!-- GROUP 3 — FAIL < 3.0 ----------------------------------------------- -->
+<div class="group-title"><b>Grupo 3 · FAIL</b><span>ratio &lt; 3.0 — proibidas para texto</span></div>
+<div class="fail-grid">
+
+  <div class="fail">
+    <div class="row1">
+      <div class="demo" style="background:#FFFFFF; color:#00FCA8; border:1px solid #E2E6F1;">Recuperar</div>
+      <span class="ratio-fail">1.36</span>
+    </div>
+    <span class="pair-name">Green / Branco</span>
+    <span class="why">Texto verde em fundo branco é ilegível.</span>
+  </div>
+
+  <div class="fail">
+    <div class="row1">
+      <div class="demo" style="background:#1AFFFF; color:#FFFFFF;">Recuperar</div>
+      <span class="ratio-fail">1.25</span>
+    </div>
+    <span class="pair-name">Branco / Ciano</span>
+    <span class="why">Ciano luminoso demais para texto branco por cima.</span>
+  </div>
+
+  <div class="fail">
+    <div class="row1">
+      <div class="demo" style="background:#0B1B3F; color:#1A3375;">Recuperar</div>
+      <span class="ratio-fail">1.43</span>
+    </div>
+    <span class="pair-name">Patrimonium Blue / Navy escuríssimo</span>
+    <span class="why">Dois azuis próximos demais — sem separação visual.</span>
+  </div>
+
+  <div class="fail">
+    <div class="row1">
+      <div class="demo" style="background:#1AFFFF; color:#00FCA8;">Recuperar</div>
+      <span class="ratio-fail">1.08</span>
+    </div>
+    <span class="pair-name">Green / Ciano</span>
+    <span class="why">Praticamente sem contraste — proibido para qualquer uso.</span>
+  </div>
+
+</div>
+
+<div class="footer">
+  <b>Regra</b> — O Green <code>#00FCA8</code> e o Ciano <code>#1AFFFF</code> da marca <b>nunca</b> carregam texto sobre fundo claro. Eles funcionam como <b>fundo</b> para texto escuro, ou como <b>acento</b> sobre fundo escuro. Para qualquer combinação não listada acima, validar com ferramenta de contraste WCAG antes de usar.
+</div>
+
+</body></html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Colors · Brand</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 18px; background: #fff; font-family: var(--font-sans); }
+  .group-title { font: 600 11px/1 var(--font-sans); color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 8px; }
+  .row { display: grid; gap: 10px; margin-bottom: 14px; }
+  .row.principais { grid-template-columns: repeat(3, 1fr); }
+  .row.apoio       { grid-template-columns: repeat(6, 1fr); }
+  .sw { display: flex; flex-direction: column; gap: 6px; }
+  .chip { height: 76px; border-radius: 10px; border: 1px solid var(--line); }
+  .name { font: 600 12px/1.2 var(--font-sans); color: var(--fg-1); }
+  .hex  { font: 500 11px/1.2 var(--font-mono); color: var(--fg-3); letter-spacing: 0.02em; }
+</style></head><body>
+  <div class="group-title">Principais (sagradas)</div>
+  <div class="row principais">
+    <div class="sw"><div class="chip" style="background:#1A3375"></div><span class="name">Patrimonium Blue</span><span class="hex">#1A3375</span></div>
+    <div class="sw"><div class="chip" style="background:#00FCA8"></div><span class="name">Patrimonium Green</span><span class="hex">#00FCA8</span></div>
+    <div class="sw"><div class="chip" style="background:#FFFFFF; border-color:#E2E6F1"></div><span class="name">Branco</span><span class="hex">#FFFFFF</span></div>
+  </div>
+
+  <div class="group-title">Apoio</div>
+  <div class="row apoio">
+    <div class="sw"><div class="chip" style="background:#0B1B3F"></div><span class="name">Navy escuríssimo</span><span class="hex">#0B1B3F</span></div>
+    <div class="sw"><div class="chip" style="background:#3059AF"></div><span class="name">Navy médio</span><span class="hex">#3059AF</span></div>
+    <div class="sw"><div class="chip" style="background:#0C998F"></div><span class="name">Teal</span><span class="hex">#0C998F</span></div>
+    <div class="sw"><div class="chip" style="background:#1AFFFF"></div><span class="name">Ciano luminoso</span><span class="hex">#1AFFFF</span></div>
+    <div class="sw"><div class="chip" style="background:#3D3D3D"></div><span class="name">Neutro escuro</span><span class="hex">#3D3D3D</span></div>
+    <div class="sw"><div class="chip" style="background:#C8C8CC"></div><span class="name">Neutro claro</span><span class="hex">#C8C8CC</span></div>
+  </div>
+</body></html>

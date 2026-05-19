@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Princípios · cards visuais</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 28px 32px 40px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+    .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 28px; }
+    .head .title { font: 700 22px/1 var(--font-display); letter-spacing: -0.01em; }
+    .head .sub   { font: 400 13px/1.45 var(--font-sans); color: var(--neutral-strong); max-width: 720px; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid .span-2 { grid-column: span 2; }
+    .pcard {
+      border: 1px solid var(--neutral-light);
+      border-radius: 16px;
+      padding: 28px 28px 26px;
+      background: #fff;
+      display: flex; flex-direction: column;
+      min-height: 240px;
+    }
+    .pcard .num {
+      font: 800 56px/1 var(--font-display);
+      color: var(--brand-navy);
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .pcard h2 {
+      margin: 0 0 12px;
+      font: 700 26px/1.15 var(--font-display);
+      color: var(--fg-1);
+      letter-spacing: -0.005em;
+      max-width: 520px;
+    }
+    .pcard p {
+      margin: 0;
+      font: 400 16px/1.55 var(--font-sans);
+      color: var(--neutral-strong);
+      max-width: 560px;
+      text-wrap: pretty;
+    }
+    .pcard.dark {
+      background: var(--brand-navy-deep);
+      border-color: var(--brand-navy-deep);
+    }
+    .pcard.dark .num { color: var(--brand-green); }
+    .pcard.dark h2 { color: #fff; }
+    .pcard.dark p { color: var(--brand-neutral-dark); color: #C8C8CC; }
+
+    .footer {
+      margin-top: 28px;
+      padding: 18px 22px;
+      background: var(--neutral-surface);
+      border-radius: 16px;
+      font: 400 13px/1.6 var(--font-sans); color: var(--neutral-strong);
+    }
+    .footer b { color: var(--fg-1); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<div class="head">
+  <span class="title">Princípios do Patrimonium DS</span>
+  <span class="sub">5 princípios que guiam decisões de design. Quando algo não estiver no sistema, decida com base aqui — não invente padrão novo se um princípio resolve.</span>
+</div>
+
+<div class="grid">
+
+  <div class="pcard">
+    <div class="num">01</div>
+    <h2>Solidez antes de virtuosismo</h2>
+    <p>A Patrimonium é uma marca financeira e contábil. Confiança vem antes de personalidade. O sistema favorece soluções discretas, profissionais e duradouras em vez de decisões expressivas que pareçam modinha. Quando estiver em dúvida entre o sóbrio e o brilhante, escolha o sóbrio.</p>
+  </div>
+
+  <div class="pcard">
+    <div class="num">02</div>
+    <h2>O miolo é sagrado</h2>
+    <p>O elemento capsular verde do logo (o miolo do P) é a identidade visual mais reconhecível da marca. Toda decisão de forma, cor e ritmo no DS conversa com essa identidade — direta ou indiretamente. Não há decisão neutra sobre o miolo.</p>
+  </div>
+
+  <div class="pcard">
+    <div class="num">03</div>
+    <h2>Discreet, low-spread</h2>
+    <p>Sombras, transições e efeitos no sistema são sutis, contidos e sem drama. Nada de brightness alto, blur exagerado, animações longas. Profissionalismo é evidenciado por contenção, não por exuberância.</p>
+  </div>
+
+  <div class="pcard">
+    <div class="num">04</div>
+    <h2>Pill é motivo, não enfeite</h2>
+    <p>O <code>radius/pill</code> (999px) é a forma extrema da identidade Patrimonium. Aparece pouco, significa muito. Reservado para elementos que carregam a marca diretamente: botão affirmative, dots, logo, status circular, switch track. Usar fora desses casos dilui o significado.</p>
+  </div>
+
+  <div class="pcard dark span-2">
+    <div class="num">05</div>
+    <h2>Branded House, não casa de marcas</h2>
+    <p>As 8 sub-marcas compartilham o mesmo chassi visual. A diferenciação acontece pela logo (ícone + nome), nunca por cor extra. Toda sub-marca usa Patrimonium Blue + Green + construção outline. Inventar cor ou tipografia própria para uma sub-marca é proibido.</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <b>Adendo · Opacidade não é foundation</b> — Opacidade nunca é usada para alterar a aparência de conteúdo significativo. Para atenuar texto, use o token de cor certo (<code>--neutral-light</code>). Para "desligar" um botão, use a variant <code>disabled</code>. Para fundos translúcidos funcionais, use os 3 tokens autorizados: <code>--backdrop-modal</code>, <code>--focus-ring</code>, <code>--menu-hover-on-dark/light</code>.
+</div>
+
+</body>
+</html>

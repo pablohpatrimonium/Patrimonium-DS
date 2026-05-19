@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Patrimonium · App interno · Dark</title>
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <style>
+    html, body { height: 100%; }
+    /* ============================================================
+       DARK MODE — paleta invertida sem tokens novos.
+       app bg = navy escuríssimo #0B1B3F
+       cards  = Patrimonium Blue #1A3375 (elevação por cor mais clara)
+       texto  = #FFF / Neutro claro #C8C8CC
+       borders= navy médio #3059AF a 35%
+       ============================================================ */
+    body { margin: 0; background: var(--brand-navy-deep); color: #fff; font-family: var(--font-sans); }
+
+    /* ---------------- App shell ---------------- */
+    .app { display: grid; grid-template-columns: 248px 1fr; min-height: 100vh; }
+
+    /* Sidebar — mantém navy escuríssimo; ativo ganha contraste sobre app dark */
+    .side { background: var(--brand-navy-deep); color: #fff; padding: 22px 16px; display: flex; flex-direction: column; gap: 6px; border-right: 1px solid rgba(48,89,175,0.25); }
+    .side .brand { display: flex; align-items: center; gap: 10px; padding: 4px 10px 18px; }
+    .side .brand img { width: 32px; height: 32px; object-fit: contain; filter: brightness(0) invert(1); }
+    .side .brand b { font: 700 16px/1 var(--font-sans); letter-spacing: -0.005em; }
+    .side .brand span { font: 400 11px/1 var(--font-sans); color: var(--brand-green); letter-spacing: 0.06em; text-transform: uppercase; }
+    .side .group { font: 600 11px/1 var(--font-sans); color: var(--neutral-light); opacity: 0.55; text-transform: uppercase; letter-spacing: 0.08em; padding: 16px 10px 4px; }
+    .nav { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; color: var(--neutral-light); font: 500 14px/1 var(--font-sans); cursor: pointer; transition: background var(--dur-fast); }
+    .nav:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    .nav.active { background: var(--brand-navy); color: #fff; }
+    .nav.active::before { content:""; width: 3px; height: 18px; background: var(--brand-green); border-radius: 999px; margin-left: -12px; margin-right: 6px; }
+    .nav svg { width: 20px; height: 20px; stroke-width: 1.5; flex-shrink: 0; }
+    .nav .count { margin-left: auto; font: 600 11px/1 var(--font-sans); padding: 3px 7px; border-radius: 999px; background: var(--brand-green); color: var(--brand-navy); }
+
+    /* Main area */
+    .main { display: flex; flex-direction: column; min-height: 100vh; background: var(--brand-navy-deep); }
+    .topbar { background: var(--brand-navy-deep); border-bottom: 1px solid rgba(48,89,175,0.25); padding: 14px 28px; display: flex; align-items: center; gap: 16px; }
+    .search { flex: 1; max-width: 480px; position: relative; }
+    .search input { width: 100%; height: 40px; padding: 0 14px 0 40px; border: 1px solid rgba(48,89,175,0.35); border-radius: 8px; font: 400 14px/1 var(--font-sans); outline: none; background: var(--brand-navy); color: #fff; }
+    .search input::placeholder { color: var(--neutral-light); opacity: 0.6; }
+    .search input:focus { border-color: var(--brand-green); box-shadow: 0 0 0 4px rgba(0,252,168,0.18); }
+    .search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--neutral-light); width: 18px; height: 18px; stroke-width: 1.5; }
+    .topbar .spacer { flex: 1; }
+    .icon-btn { width: 40px; height: 40px; border-radius: 8px; display: grid; place-items: center; color: var(--neutral-light); border: 1px solid rgba(48,89,175,0.35); background: var(--brand-navy); cursor: pointer; position: relative; }
+    .icon-btn:hover { background: rgba(48,89,175,0.4); color: #fff; }
+    .icon-btn svg { width: 20px; height: 20px; stroke-width: 1.5; }
+    .icon-btn .dot { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; background: var(--brand-green); border-radius: 999px; border: 2px solid var(--brand-navy-deep); }
+    .avatar { width: 40px; height: 40px; border-radius: 999px; background: var(--brand-green); color: var(--brand-navy); display: grid; place-items: center; font: 700 14px/1 var(--font-sans); }
+
+    /* Content */
+    .content { padding: 28px; display: flex; flex-direction: column; gap: 22px; max-width: 1280px; width: 100%; box-sizing: border-box; }
+    .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+    .page-head .eyebrow { font: 600 11px/1 var(--font-sans); color: var(--neutral-light); letter-spacing: 0.08em; text-transform: uppercase; }
+    .page-head h1 { margin: 6px 0 0; font: 700 32px/1.1 var(--font-display); letter-spacing: -0.01em; color: #fff; }
+    .page-head .actions { display: flex; gap: 10px; }
+
+    /* KPI row */
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .kpi { background: var(--brand-navy); border: 1px solid rgba(48,89,175,0.35); border-radius: 16px; padding: 18px 20px; }
+    .kpi .ov { font: 600 11px/1 var(--font-sans); color: var(--neutral-light); letter-spacing: 0.08em; text-transform: uppercase; }
+    .kpi .big { font: 700 28px/1.05 var(--font-display); color: #fff; margin: 10px 0 4px; letter-spacing: -0.005em; }
+    .kpi .sub { font: 400 13px/1.3 var(--font-sans); color: var(--neutral-light); }
+    .delta { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; font: 600 12px/1 var(--font-sans); margin-top: 12px; }
+    .delta.up { background: rgba(0,252,168,0.12); color: var(--brand-green); }
+    .delta.flat { background: rgba(200,200,204,0.12); color: var(--neutral-light); }
+    .delta.down { background: rgba(255,107,107,0.14); color: #FF8B8B; }
+
+    /* Two-col area */
+    .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+
+    /* Table */
+    .panel { background: var(--brand-navy); border: 1px solid rgba(48,89,175,0.35); border-radius: 16px; overflow: hidden; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid rgba(48,89,175,0.35); }
+    .panel-head h3 { margin: 0; font: 600 16px/1.2 var(--font-display); color: #fff; }
+    .filters { display: flex; gap: 8px; }
+    .chip { font: 500 12px/1 var(--font-sans); padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(48,89,175,0.35); background: transparent; cursor: pointer; color: var(--neutral-light); }
+    .chip:hover { background: rgba(48,89,175,0.25); color: #fff; }
+    .chip.on { background: #fff; color: var(--brand-navy); border-color: #fff; }
+
+    table { width: 100%; border-collapse: collapse; font-family: var(--font-sans); }
+    th { text-align: left; font: 700 11px/1 var(--font-sans); color: var(--neutral-light); letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 20px; border-bottom: 1px solid rgba(48,89,175,0.35); }
+    td { padding: 14px 20px; font-size: 14px; color: #fff; border-bottom: 1px solid rgba(48,89,175,0.25); }
+    tr:last-child td { border-bottom: 0; }
+    tr:hover td { background: rgba(48,89,175,0.25); }
+    td.right, th.right { text-align: right; font-variant-numeric: tabular-nums; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font: 600 12px/1 var(--font-sans); }
+    .badge::before { content: ""; width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
+    .badge.success { background: rgba(0,252,168,0.14); color: var(--brand-green); }
+    .badge.warning { background: rgba(245,166,35,0.15); color: #F5C56D; }
+    .badge.danger  { background: rgba(255,107,107,0.15); color: #FF8B8B; }
+    .badge.info    { background: rgba(122,180,255,0.14); color: #BFD7FF; }
+    .badge.muted   { background: rgba(200,200,204,0.12); color: var(--neutral-light); }
+
+    /* Side panel */
+    .side-panel { display: flex; flex-direction: column; gap: 16px; }
+    .doc-card { background: var(--brand-navy); border: 1px solid rgba(48,89,175,0.35); border-radius: 16px; padding: 16px; display: flex; gap: 12px; align-items: flex-start; }
+    .doc-card .icon { width: 40px; height: 40px; border-radius: 8px; background: rgba(0,252,168,0.14); color: var(--brand-green); display: grid; place-items: center; flex-shrink: 0; }
+    .doc-card h4 { margin: 0 0 4px; font: 600 15px/1.2 var(--font-display); color: #fff; }
+    .doc-card p { margin: 0 0 8px; font-size: 13px; color: var(--neutral-light); }
+
+    /* Buttons used in app */
+    .btn { font: 600 14px/1 var(--font-sans); border: 1.5px solid transparent; border-radius: 8px; padding: 10px 18px; cursor: pointer; transition: all var(--dur-fast); display: inline-flex; align-items: center; gap: 8px; }
+    .btn svg { width: 16px; height: 16px; stroke-width: 1.5; }
+    .btn.primary { background: #fff; color: var(--brand-navy); }
+    .btn.primary:hover { background: var(--neutral-light); }
+    .btn.outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.4); }
+    .btn.outline:hover { background: rgba(255,255,255,0.08); border-color: #fff; }
+    .btn.ghost { background: transparent; color: var(--neutral-light); }
+    .btn.ghost:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+    /* Modal */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(11,27,63,0.7); display: none; place-items: center; z-index: 50; backdrop-filter: blur(2px); }
+    .modal-backdrop.open { display: grid; }
+    .modal { background: var(--brand-navy); color: #fff; border-radius: 16px; padding: 24px; width: 440px; box-shadow: var(--shadow-3); border: 1px solid rgba(48,89,175,0.35); }
+    .modal h2 { margin: 0 0 8px; font: 700 22px/1.1 var(--font-display); color: #fff; }
+    .modal p { color: var(--neutral-light); font-size: 14px; margin: 0 0 18px; }
+    .modal .field { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+    .modal label { font: 600 12px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: #fff; }
+    .modal input { font: 400 16px/1 var(--font-sans); padding: 12px 14px; border: 1.5px solid rgba(48,89,175,0.45); border-radius: 8px; outline: none; background: var(--brand-navy-deep); color: #fff; }
+    .modal input:focus { border-color: var(--brand-green); box-shadow: 0 0 0 4px rgba(0,252,168,0.18); }
+    .modal .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--brand-navy); color: #fff; padding: 12px 16px; border-radius: 8px; box-shadow: var(--shadow-3); font: 500 14px/1.2 var(--font-sans); display: flex; gap: 10px; align-items: center; opacity: 0; transform: translateY(8px); transition: all var(--dur-base); border: 1px solid rgba(48,89,175,0.4); }
+    .toast.show { opacity: 1; transform: none; }
+    .toast .dot { width: 8px; height: 8px; background: var(--brand-green); border-radius: 999px; }
+
+    /* Dark-mode badge for variation chip (top-right) */
+    .dark-badge { position: fixed; top: 16px; right: 16px; font: 600 11px/1 var(--font-mono); padding: 6px 10px; border-radius: 999px; background: var(--brand-green); color: var(--brand-navy); letter-spacing: 0.06em; text-transform: uppercase; z-index: 10; }
+  </style>
+</head>
+<body>
+
+<div class="dark-badge">Dark mode · variação</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="side">
+    <div class="brand">
+      <img src="../../assets/simbolo-negativo.png" alt="">
+      <div style="display:flex; flex-direction:column; gap:2px;">
+        <b>patrimonium</b>
+        <span>contabilidade</span>
+      </div>
+    </div>
+
+    <div class="nav active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      Documentos
+      <span class="count">12</span>
+    </div>
+    <div class="nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+      Notas fiscais
+    </div>
+    <div class="nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Obrigações
+    </div>
+
+    <div class="group">Produtos</div>
+    <div class="nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12a9 9 0 0 0 18 0"/><circle cx="12" cy="12" r="3"/></svg>
+      Radar
+    </div>
+    <div class="nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>
+      Arquivo Digital
+    </div>
+    <div class="nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Recuperação tributária
+    </div>
+    <div class="nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Academy
+    </div>
+
+    <div style="margin-top:auto; padding-top:18px; border-top: 1px solid rgba(48,89,175,0.35);">
+      <div class="nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Configurações
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input placeholder="Buscar CNPJ, nota fiscal, certificado…">
+      </div>
+      <div class="spacer"></div>
+      <button class="icon-btn" title="Notificações">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="icon-btn" title="Ajuda">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </button>
+      <div class="avatar">PH</div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <span class="eyebrow">Visão geral</span>
+          <h1>Bom dia, Pablo</h1>
+        </div>
+        <div class="actions">
+          <button class="btn outline">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exportar
+          </button>
+          <button class="btn primary" id="openModal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Novo lançamento
+          </button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpis">
+        <div class="kpi">
+          <span class="ov">Recuperação tributária</span>
+          <div class="big">R$ 12.480,00</div>
+          <span class="sub">recuperados no último trimestre</span>
+          <div class="delta up">+18% vs Q3</div>
+        </div>
+        <div class="kpi">
+          <span class="ov">Notas fiscais</span>
+          <div class="big">348</div>
+          <span class="sub">emitidas este mês</span>
+          <div class="delta up">+6% vs out</div>
+        </div>
+        <div class="kpi">
+          <span class="ov">Obrigações pendentes</span>
+          <div class="big">3</div>
+          <span class="sub">vencem em até 7 dias</span>
+          <div class="delta down">2 vencidas</div>
+        </div>
+        <div class="kpi">
+          <span class="ov">Certificados</span>
+          <div class="big">7</div>
+          <span class="sub">válidos · 1 vence em 30d</span>
+          <div class="delta flat">Sem alteração</div>
+        </div>
+      </div>
+
+      <!-- Two cols -->
+      <div class="grid-2">
+
+        <!-- Table -->
+        <section class="panel">
+          <div class="panel-head">
+            <h3>Documentos recentes</h3>
+            <div class="filters">
+              <button class="chip on" data-filter="all">Todos</button>
+              <button class="chip" data-filter="success">Ativos</button>
+              <button class="chip" data-filter="warning">Em análise</button>
+              <button class="chip" data-filter="danger">Rejeitados</button>
+            </div>
+          </div>
+          <table>
+            <thead><tr>
+              <th>Documento</th><th>Empresa</th><th>Status</th><th class="right">Valor</th>
+            </tr></thead>
+            <tbody id="rows">
+              <tr data-status="success"><td><b>NFe 12.344</b></td><td>Mendes &amp; Cia LTDA</td><td><span class="badge success">Ativo</span></td><td class="right">R$ 4.820,00</td></tr>
+              <tr data-status="warning"><td><b>NFe 12.345</b></td><td>Marília Indústria</td><td><span class="badge warning">Em análise</span></td><td class="right">R$ 1.230,40</td></tr>
+              <tr data-status="danger"><td><b>NFe 12.346</b></td><td>Café do Centro ME</td><td><span class="badge danger">Rejeitado</span></td><td class="right">R$ 895,02</td></tr>
+              <tr data-status="success"><td><b>NFe 12.347</b></td><td>Studio Vila Madá</td><td><span class="badge success">Ativo</span></td><td class="right">R$ 1.000,97</td></tr>
+              <tr data-status="info"><td><b>DAS 11/25</b></td><td>Patrimonium SA</td><td><span class="badge info">Agendado</span></td><td class="right">R$ 18.940,12</td></tr>
+              <tr data-status="muted"><td><b>SPED Fiscal</b></td><td>Holding Norte LTDA</td><td><span class="badge muted">Arquivado</span></td><td class="right">—</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Side panel -->
+        <aside class="side-panel">
+          <div class="doc-card">
+            <div class="icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><polyline points="9 14 11 16 15 12"/></svg>
+            </div>
+            <div style="flex:1;">
+              <h4>Certificado A1</h4>
+              <p>Válido até 28/04/2027</p>
+              <span class="badge success">Ativo</span>
+            </div>
+          </div>
+
+          <div class="panel" style="padding: 16px;">
+            <h4 style="margin:0 0 12px; font: 600 14px/1 var(--font-sans); color: var(--neutral-light); text-transform: uppercase; letter-spacing: 0.08em;">Próximas obrigações</h4>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="width:36px; text-align:center; font: 700 14px/1 var(--font-display); color: var(--brand-green);">12<br><small style="font:500 10px/1 var(--font-sans); color:var(--neutral-light); text-transform:uppercase;">nov</small></span>
+                <div style="flex:1;">
+                  <div style="font: 600 14px/1.2; color: #fff;">DAS Simples Nacional</div>
+                  <div style="font: 400 12px/1; color: var(--neutral-light); margin-top: 2px;">Vence em 3 dias</div>
+                </div>
+                <span class="badge warning">3d</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="width:36px; text-align:center; font: 700 14px/1 var(--font-display); color: var(--brand-green);">20<br><small style="font:500 10px/1 var(--font-sans); color:var(--neutral-light); text-transform:uppercase;">nov</small></span>
+                <div style="flex:1;">
+                  <div style="font: 600 14px/1.2; color: #fff;">DCTFWeb</div>
+                  <div style="font: 400 12px/1; color: var(--neutral-light); margin-top: 2px;">Vence em 11 dias</div>
+                </div>
+                <span class="badge info">11d</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="width:36px; text-align:center; font: 700 14px/1 var(--font-display); color: var(--brand-green);">30<br><small style="font:500 10px/1 var(--font-sans); color:var(--neutral-light); text-transform:uppercase;">nov</small></span>
+                <div style="flex:1;">
+                  <div style="font: 600 14px/1.2; color: #fff;">SPED Contribuições</div>
+                  <div style="font: 400 12px/1; color: var(--neutral-light); margin-top: 2px;">Vence em 21 dias</div>
+                </div>
+                <span class="badge muted">21d</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding: 16px; background: var(--brand-navy-deep); border: 1px solid rgba(0,252,168,0.25);">
+            <div style="font: 600 11px/1; color: var(--brand-green); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">Patrimonium radar</div>
+            <div style="font: 700 18px/1.2 var(--font-display); color: #fff; margin-bottom: 8px;">3 oportunidades de crédito identificadas</div>
+            <div style="font: 400 13px/1.4 var(--font-sans); color: var(--neutral-light); margin-bottom: 14px;">Revisamos seus últimos 90 dias de notas e encontramos R$ 4.210,00 em recuperação possível.</div>
+            <button class="btn" style="background: var(--brand-green); color: var(--brand-navy); border:0;">Ver oportunidades</button>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h2>Novo lançamento</h2>
+    <p>Adicione manualmente um documento fiscal. Para upload em lote, use a área de Documentos.</p>
+    <div class="field"><label>CNPJ</label><input value="12.345.678/0001-90"></div>
+    <div class="field"><label>Empresa</label><input placeholder="Razão social"></div>
+    <div class="field"><label>Valor (R$)</label><input placeholder="0,00"></div>
+    <div class="actions">
+      <button class="btn ghost" id="closeModal">Cancelar</button>
+      <button class="btn primary" id="confirmModal">Iniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span class="dot"></span>Lançamento criado · NFe 12.348</div>
+
+<script>
+  // Sidebar nav active state
+  document.querySelectorAll('.nav').forEach(n => {
+    n.addEventListener('click', () => {
+      document.querySelectorAll('.nav').forEach(x => x.classList.remove('active'));
+      n.classList.add('active');
+    });
+  });
+
+  // Filter chips
+  document.querySelectorAll('.filters .chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.filters .chip').forEach(x => x.classList.remove('on'));
+      c.classList.add('on');
+      const f = c.dataset.filter;
+      document.querySelectorAll('#rows tr').forEach(r => {
+        r.style.display = (f === 'all' || r.dataset.status === f) ? '' : 'none';
+      });
+    });
+  });
+
+  // Modal
+  const modal = document.getElementById('modal');
+  document.getElementById('openModal').onclick = () => modal.classList.add('open');
+  document.getElementById('closeModal').onclick = () => modal.classList.remove('open');
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+
+  // Toast
+  const toast = document.getElementById('toast');
+  document.getElementById('confirmModal').onclick = () => {
+    modal.classList.remove('open');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2400);
+  };
+</script>
+
+</body>
+</html>

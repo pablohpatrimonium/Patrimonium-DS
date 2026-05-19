@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Colors · Semantic</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 18px; background: #fff; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .pair { display: flex; flex-direction: column; gap: 4px; }
+  .pair .chips { display: flex; gap: 6px; height: 72px; }
+  .pair .chips > div { flex: 1; border-radius: 10px; border: 1px solid rgba(0,0,0,.04); }
+  .name { font: 600 13px/1.2 var(--font-sans); color: var(--fg-1); }
+  .hex { font: 500 11px/1.2 var(--font-mono); color: var(--fg-3); display: flex; gap: 10px; }
+  .use { font: 400 11px/1.3 var(--font-sans); color: var(--fg-3); margin-top: 2px; }
+</style></head><body>
+<div class="row">
+  <div class="pair">
+    <div class="chips"><div style="background:#1F8F5C"></div><div style="background:#E6F7EF"></div></div>
+    <span class="name">Success</span><span class="hex">#1F8F5C · #E6F7EF</span>
+    <span class="use">ativo, válido, recuperado</span>
+  </div>
+  <div class="pair">
+    <div class="chips"><div style="background:#F5A623"></div><div style="background:#FEF3C7"></div></div>
+    <span class="name">Warning</span><span class="hex">#F5A623 · #FEF3C7</span>
+    <span class="use">vence em breve, atenção</span>
+  </div>
+  <div class="pair">
+    <div class="chips"><div style="background:#B91C1C"></div><div style="background:#FEE2E2"></div></div>
+    <span class="name">Danger</span><span class="hex">#B91C1C · #FEE2E2</span>
+    <span class="use">vencido, rejeitado, erro</span>
+  </div>
+  <div class="pair">
+    <div class="chips"><div style="background:#1A3375"></div><div style="background:#E0E7FF"></div></div>
+    <span class="name">Info</span><span class="hex">#1A3375 · #E0E7FF</span>
+    <span class="use">em análise, informativo</span>
+  </div>
+  <div class="pair">
+    <div class="chips"><div style="background:#475569"></div><div style="background:#EEF2F6"></div></div>
+    <span class="name">Neutral</span><span class="hex">#475569 · #EEF2F6</span>
+    <span class="use">sem ação, arquivado, indisponível</span>
+  </div>
+  <div class="pair">
+    <div class="chips"><div style="background:#3730A3"></div><div style="background:#E0E7FF"></div></div>
+    <span class="name">Pending</span><span class="hex">#3730A3 · #E0E7FF</span>
+    <span class="use">em fila, aguardando</span>
+  </div>
+</div>
+</body></html>

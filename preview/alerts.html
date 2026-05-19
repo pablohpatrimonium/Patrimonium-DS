@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Alerts & Banners</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px 28px; background: #fff; font-family: var(--font-sans); }
+  .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+  .head .title { font: 700 18px/1 var(--font-display); color: var(--fg-1); }
+  .head .sub { font: 500 12px/1.3 var(--font-mono); color: var(--fg-3); }
+  .meta { font: 500 11px/1 var(--font-mono); color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.06em; margin: 22px 0 10px; }
+
+  /* Alert inline */
+  .alert { display: flex; gap: 12px; padding: 12px 14px; border-radius: 8px; border: 1px solid transparent; align-items: flex-start; }
+  .alert .ic { width: 20px; height: 20px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .alert .body { flex: 1; }
+  .alert .body b { display: block; font: 600 14px/1.3 var(--font-sans); margin-bottom: 2px; }
+  .alert .body p { margin: 0; font: 400 13px/1.45 var(--font-sans); color: inherit; opacity: 0.9; }
+  .alert .close { background: transparent; border: 0; color: inherit; cursor: pointer; opacity: 0.6; }
+
+  .alert.success { background: var(--success-bg); color: var(--success); border-color: rgba(31,143,92,0.18); }
+  .alert.warning { background: var(--warning-bg); color: #B07012; border-color: rgba(245,166,35,0.25); }
+  .alert.danger  { background: var(--danger-bg);  color: var(--danger);  border-color: rgba(185,28,28,0.18); }
+  .alert.info    { background: var(--info-bg);    color: var(--brand-navy); border-color: rgba(26,51,117,0.18); }
+
+  /* Banner full-width */
+  .banner { display: flex; gap: 14px; padding: 14px 20px; background: var(--brand-navy); color: #fff; border-radius: 8px; align-items: center; }
+  .banner .ic { width: 20px; height: 20px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.5; color: var(--brand-green); }
+  .banner b { font: 600 14px/1.3 var(--font-sans); }
+  .banner p { margin: 2px 0 0; font: 400 13px/1.4 var(--font-sans); color: rgba(255,255,255,0.78); }
+  .banner .actions { margin-left: auto; display: flex; gap: 8px; }
+  .banner button { font: 600 13px/1 var(--font-sans); padding: 8px 14px; border-radius: 8px; border: 0; cursor: pointer; }
+  .banner .primary { background: var(--brand-green); color: var(--brand-navy); }
+  .banner .ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+
+  /* Toast */
+  .toast { display: inline-flex; gap: 10px; align-items: center; padding: 12px 16px; background: var(--brand-navy); color: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(15,23,42,0.06), 0 4px 12px rgba(15,23,42,0.08); font: 500 14px/1.2 var(--font-sans); }
+  .toast .dot { width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0; }
+  .toast.success .dot { background: var(--brand-green); }
+  .toast.warning .dot { background: var(--warning); }
+  .toast.danger  .dot { background: #FF6B6B; }
+  .toast.info    .dot { background: #7AB4FF; }
+  .toasts { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+</style></head><body>
+  <div class="head">
+    <span class="title">Alerts & Banners</span>
+    <span class="sub">Alert inline · Banner global · Toast</span>
+  </div>
+
+  <div class="meta">Alert inline</div>
+  <div style="display: flex; flex-direction: column; gap: 10px;">
+    <div class="alert success">
+      <svg class="ic" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <div class="body"><b>Recuperação aprovada</b><p>R$ 12.480,00 foi creditado ao seu CNPJ. Comprovante disponível no Arquivo Digital.</p></div>
+      <button class="close" aria-label="Fechar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="alert warning">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div class="body"><b>DAS vence em 3 dias</b><p>Para evitar multa, agende o pagamento até 12/11.</p></div>
+      <button class="close" aria-label="Fechar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="alert danger">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="body"><b>Não conseguimos validar este CNPJ</b><p>Verifique se o número está correto e tente novamente.</p></div>
+      <button class="close" aria-label="Fechar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="alert info">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div class="body"><b>Sincronização em andamento</b><p>Suas notas dos últimos 90 dias estão sendo importadas — pode levar alguns minutos.</p></div>
+      <button class="close" aria-label="Fechar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+  </div>
+
+  <div class="meta">Banner global</div>
+  <div class="banner">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>
+    <div>
+      <b>Patrimonium Radar identificou 3 oportunidades</b>
+      <p>R$ 4.210,00 em créditos recuperáveis nos últimos 90 dias.</p>
+    </div>
+    <div class="actions">
+      <button class="ghost">Mais tarde</button>
+      <button class="primary">Ver oportunidades</button>
+    </div>
+  </div>
+
+  <div class="meta">Toast</div>
+  <div class="toasts">
+    <div class="toast success"><span class="dot"></span>Lançamento criado · NFe 12.348</div>
+    <div class="toast warning"><span class="dot"></span>DAS vence em 3 dias · 12/11</div>
+    <div class="toast danger"><span class="dot"></span>Falha ao importar 4 notas fiscais</div>
+    <div class="toast info"><span class="dot"></span>Sincronização concluída · 348 documentos</div>
+  </div>
+</body></html>

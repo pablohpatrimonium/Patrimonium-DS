@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Date picker</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 24px 28px 40px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+    .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 22px; }
+    .head .title { font: 700 18px/1 var(--font-display); }
+    .head .sub { font: 500 12px/1.4 var(--font-mono); color: var(--fg-3); }
+    .gname { font: 700 11px/1 var(--font-mono); color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; margin: 28px 0 12px; }
+
+    /* ============ DATE INPUT ============ */
+    .field { display: flex; flex-direction: column; gap: 6px; max-width: 280px; }
+    .field label { font: 700 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-1); }
+    .di {
+      position: relative;
+      display: inline-flex; align-items: center;
+    }
+    .di input {
+      width: 100%; height: 44px;
+      padding: 0 38px 0 14px;
+      border: 1.5px solid var(--neutral-light); border-radius: 8px;
+      font: 400 16px/1 var(--font-sans); color: var(--fg-1);
+      background: #fff; outline: none;
+      font-variant-numeric: tabular-nums;
+    }
+    .di input::placeholder { color: var(--neutral-light); }
+    .di input:hover { border-color: var(--brand-navy); }
+    .di.focused input, .di input:focus { border-color: var(--brand-navy); box-shadow: var(--focus-ring); }
+    .di.error input { border-color: var(--danger); }
+    .di .ic-cal {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      width: 20px; height: 20px; stroke: var(--neutral-strong); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+      pointer-events: none;
+    }
+    .di.disabled input { background: var(--neutral-surface); color: var(--neutral-light); cursor: not-allowed; }
+    .err-msg { font: 500 12px/1 var(--font-sans); color: var(--danger); }
+
+    .input-states { display: grid; grid-template-columns: repeat(3, 280px); gap: 24px; }
+    .input-states .lbl { font: 500 11px/1 var(--font-mono); color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+
+    /* ============ CALENDAR POPOVER ============ */
+    .cal {
+      width: 320px;
+      background: #fff;
+      border: 1px solid var(--neutral-light);
+      border-radius: 8px;
+      box-shadow: var(--shadow-2);
+      padding: 14px;
+      font-family: var(--font-sans);
+    }
+    .cal-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 12px; }
+    .cal-head .title { font: 600 15px/1 var(--font-display); color: var(--fg-1); cursor: pointer; }
+    .cal-head button {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 0; background: transparent;
+      color: var(--fg-2); cursor: pointer;
+      display: grid; place-items: center;
+    }
+    .cal-head button:hover { background: var(--neutral-surface); color: var(--brand-navy); }
+    .cal-head button svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .cal-grid .dow {
+      text-align: center;
+      font: 700 10px/1 var(--font-mono);
+      color: var(--neutral-light);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 6px 0;
+    }
+    .cal-grid .day {
+      height: 40px;
+      display: grid; place-items: center;
+      font: 500 14px/1 var(--font-sans);
+      color: var(--fg-1);
+      border-radius: 8px;
+      cursor: pointer;
+      font-variant-numeric: tabular-nums;
+      border: 1px solid transparent;
+    }
+    .cal-grid .day:hover { background: var(--menu-hover-on-light); }
+    .cal-grid .day.adjacent { color: var(--neutral-light); }
+    .cal-grid .day.today { border-color: var(--brand-navy); }
+    .cal-grid .day.selected { background: var(--brand-navy); color: #fff; font-weight: 600; }
+    .cal-grid .day.in-range { background: var(--info-bg); border-radius: 0; }
+    .cal-grid .day.range-start { background: var(--brand-navy); color: #fff; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+    .cal-grid .day.range-end { background: var(--brand-navy); color: #fff; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+
+    /* range calendar with presets */
+    .range-cal { display: grid; grid-template-columns: 160px 1fr; gap: 0; max-width: 540px; background: #fff; border: 1px solid var(--neutral-light); border-radius: 8px; box-shadow: var(--shadow-2); overflow: hidden; }
+    .presets { padding: 14px 8px; border-right: 1px solid var(--neutral-light); background: var(--neutral-surface); }
+    .presets .preset {
+      display: flex; align-items: center; padding: 8px 12px;
+      font: 500 13px/1 var(--font-sans); color: var(--fg-1);
+      border-radius: 8px; cursor: pointer;
+    }
+    .presets .preset:hover { background: var(--menu-hover-on-light); color: var(--brand-navy); }
+    .presets .preset.active { background: var(--brand-navy); color: #fff; }
+    .range-cal .cal { box-shadow: none; border: 0; border-radius: 0; }
+
+    /* range demo inputs */
+    .range-inputs { display: flex; gap: 12px; align-items: flex-end; max-width: 600px; }
+    .range-inputs .field { flex: 1; max-width: none; }
+    .range-inputs .arrow { font: 500 16px/1 var(--font-mono); color: var(--fg-3); padding-bottom: 12px; }
+
+    /* layouts */
+    .cal-layout { display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap; }
+
+    /* specs */
+    .specs {
+      margin-top: 28px;
+      background: var(--neutral-surface);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+      font: 400 12px/1.5 var(--font-sans); color: var(--fg-2);
+    }
+    .specs h4 { margin: 0 0 8px; font: 700 11px/1 var(--font-mono); color: var(--fg-1); letter-spacing: 0.08em; text-transform: uppercase; }
+    .specs ul { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .specs li { display: grid; grid-template-columns: 90px 1fr; gap: 6px; align-items: baseline; }
+    .specs li b { color: var(--fg-3); font: 500 11px/1.5 var(--font-mono); font-weight: 600; }
+    .specs li code { font: 500 12px/1.5 var(--font-mono); color: var(--fg-1); }
+  </style>
+</head>
+<body>
+
+<div class="head">
+  <span class="title">Date picker</span>
+  <span class="sub">Single date · Range · Calendar popover · Presets · Formato BR DD/MM/AAAA com máscara</span>
+</div>
+
+<!-- DATE INPUTS -->
+<p class="gname">Date input · estados</p>
+<div class="input-states">
+  <div>
+    <div class="lbl">Default</div>
+    <div class="field">
+      <label>Data</label>
+      <div class="di">
+        <input placeholder="DD/MM/AAAA">
+        <svg class="ic-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="lbl">Filled</div>
+    <div class="field">
+      <label>Data de emissão</label>
+      <div class="di">
+        <input value="15/05/2026">
+        <svg class="ic-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="lbl">Hover/Foco</div>
+    <div class="field">
+      <label>Vencimento</label>
+      <div class="di focused">
+        <input value="28/04/2027">
+        <svg class="ic-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="lbl">Error</div>
+    <div class="field">
+      <label>Data</label>
+      <div class="di error">
+        <input value="32/13/2026">
+        <svg class="ic-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <span class="err-msg">Data inválida</span>
+    </div>
+  </div>
+  <div>
+    <div class="lbl">Disabled</div>
+    <div class="field">
+      <label>Data</label>
+      <div class="di disabled">
+        <input value="28/04/2027" disabled>
+        <svg class="ic-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="lbl">Máscara (digitando)</div>
+    <div class="field">
+      <label>Data</label>
+      <div class="di focused">
+        <input value="150520">
+        <svg class="ic-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <span style="font: 400 11px/1.4 var(--font-sans); color: var(--fg-3);">15/05/20__ — completa automaticamente</span>
+    </div>
+  </div>
+</div>
+
+<!-- CALENDAR POPOVER -->
+<p class="gname">Calendar popover · single date</p>
+<div class="cal-layout">
+
+  <div class="cal">
+    <div class="cal-head">
+      <button><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <span class="title">Maio 2026 ▾</span>
+      <button><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+    <div class="cal-grid">
+      <span class="dow">D</span><span class="dow">S</span><span class="dow">T</span><span class="dow">Q</span><span class="dow">Q</span><span class="dow">S</span><span class="dow">S</span>
+      <span class="day adjacent">27</span><span class="day adjacent">28</span><span class="day adjacent">29</span><span class="day adjacent">30</span><span class="day">1</span><span class="day">2</span><span class="day">3</span>
+      <span class="day">4</span><span class="day">5</span><span class="day">6</span><span class="day">7</span><span class="day">8</span><span class="day">9</span><span class="day">10</span>
+      <span class="day">11</span><span class="day">12</span><span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span><span class="day">17</span>
+      <span class="day today">18</span><span class="day">19</span><span class="day">20</span><span class="day">21</span><span class="day">22</span><span class="day selected">23</span><span class="day">24</span>
+      <span class="day">25</span><span class="day">26</span><span class="day">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day">31</span>
+      <span class="day adjacent">1</span><span class="day adjacent">2</span><span class="day adjacent">3</span><span class="day adjacent">4</span><span class="day adjacent">5</span><span class="day adjacent">6</span><span class="day adjacent">7</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="lbl" style="font: 500 11px/1 var(--font-mono); color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">Estados do dia</div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="display: flex; gap: 10px; align-items: center;"><span class="day" style="background: transparent; border: 1px solid transparent; width: 40px; height: 40px; display:grid; place-items:center; border-radius:8px; font: 500 14px/1 var(--font-sans);">15</span> Default</div>
+      <div style="display: flex; gap: 10px; align-items: center;"><span class="day" style="background: var(--menu-hover-on-light); width: 40px; height: 40px; display:grid; place-items:center; border-radius:8px; font: 500 14px/1 var(--font-sans);">15</span> Hover</div>
+      <div style="display: flex; gap: 10px; align-items: center;"><span class="day" style="border: 1px solid var(--brand-navy); width: 40px; height: 40px; display:grid; place-items:center; border-radius:8px; font: 500 14px/1 var(--font-sans);">18</span> Hoje</div>
+      <div style="display: flex; gap: 10px; align-items: center;"><span class="day" style="background: var(--brand-navy); color: #fff; width: 40px; height: 40px; display:grid; place-items:center; border-radius:8px; font: 600 14px/1 var(--font-sans);">23</span> Selecionado</div>
+      <div style="display: flex; gap: 10px; align-items: center;"><span class="day" style="color: var(--neutral-light); width: 40px; height: 40px; display:grid; place-items:center; border-radius:8px; font: 500 14px/1 var(--font-sans);">1</span> Mês adjacente</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- RANGE PICKER -->
+<p class="gname">Date range · de / até</p>
+<div class="range-inputs">
+  <div class="field">
+    <label>De</label>
+    <div class="di">
+      <input value="01/05/2026">
+      <svg class="ic-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </div>
+  </div>
+  <span class="arrow">→</span>
+  <div class="field">
+    <label>Até</label>
+    <div class="di focused">
+      <input value="23/05/2026">
+      <svg class="ic-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </div>
+  </div>
+</div>
+
+<div style="height: 16px;"></div>
+
+<div class="range-cal">
+  <div class="presets">
+    <div class="preset">Hoje</div>
+    <div class="preset">Ontem</div>
+    <div class="preset">Últimos 7 dias</div>
+    <div class="preset active">Este mês</div>
+    <div class="preset">Mês passado</div>
+    <div class="preset">Este trimestre</div>
+  </div>
+  <div class="cal">
+    <div class="cal-head">
+      <button><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <span class="title">Maio 2026 ▾</span>
+      <button><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+    <div class="cal-grid">
+      <span class="dow">D</span><span class="dow">S</span><span class="dow">T</span><span class="dow">Q</span><span class="dow">Q</span><span class="dow">S</span><span class="dow">S</span>
+      <span class="day adjacent">27</span><span class="day adjacent">28</span><span class="day adjacent">29</span><span class="day adjacent">30</span><span class="day range-start">1</span><span class="day in-range">2</span><span class="day in-range">3</span>
+      <span class="day in-range">4</span><span class="day in-range">5</span><span class="day in-range">6</span><span class="day in-range">7</span><span class="day in-range">8</span><span class="day in-range">9</span><span class="day in-range">10</span>
+      <span class="day in-range">11</span><span class="day in-range">12</span><span class="day in-range">13</span><span class="day in-range">14</span><span class="day in-range">15</span><span class="day in-range">16</span><span class="day in-range">17</span>
+      <span class="day today in-range">18</span><span class="day in-range">19</span><span class="day in-range">20</span><span class="day in-range">21</span><span class="day in-range">22</span><span class="day range-end">23</span><span class="day">24</span>
+      <span class="day">25</span><span class="day">26</span><span class="day">27</span><span class="day">28</span><span class="day">29</span><span class="day">30</span><span class="day">31</span>
+    </div>
+  </div>
+</div>
+
+<!-- SPECS -->
+<aside class="specs">
+  <div>
+    <h4>Date input</h4>
+    <ul>
+      <li><b>altura</b><code>44 px</code></li>
+      <li><b>radius</b><code>8 · radius/sm</code></li>
+      <li><b>ícone</b><code>calendar · icon/md</code></li>
+      <li><b>formato</b><code>DD/MM/AAAA</code></li>
+      <li><b>máscara</b><code>auto · slash on type</code></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Calendar</h4>
+    <ul>
+      <li><b>width</b><code>320 px</code></li>
+      <li><b>cell</b><code>40 × 40 px</code></li>
+      <li><b>shadow</b><code>shadow-2</code></li>
+      <li><b>radius</b><code>8 · radius/sm</code></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Cores</h4>
+    <ul>
+      <li><b>selecionado</b><code>--brand-navy</code></li>
+      <li><b>hoje</b><code>border --brand-navy</code></li>
+      <li><b>in-range</b><code>--info-bg</code></li>
+      <li><b>adjacente</b><code>--neutral-light</code></li>
+      <li><b>hover</b><code>--menu-hover-on-light</code></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Range presets</h4>
+    <ul>
+      <li><b>posição</b><code>esquerda do calendário</code></li>
+      <li><b>scope</b><code>apenas em range</code></li>
+      <li><b>ativo</b><code>--brand-navy · #FFF</code></li>
+      <li><b>6 presets</b><code>hoje · ontem · 7d · mês · mês passado · trimestre</code></li>
+    </ul>
+  </div>
+</aside>
+
+</body>
+</html>

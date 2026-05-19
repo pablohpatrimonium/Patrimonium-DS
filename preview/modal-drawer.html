@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Modal & Drawer</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 24px 28px 40px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+    .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 22px; }
+    .head .title { font: 700 18px/1 var(--font-display); }
+    .head .sub { font: 500 12px/1.4 var(--font-mono); color: var(--fg-3); }
+    .gname { font: 700 11px/1 var(--font-mono); color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; margin: 28px 0 12px; }
+
+    /* shared chrome */
+    .surface { background: #fff; border-radius: 16px; box-shadow: var(--shadow-3); display: flex; flex-direction: column; overflow: hidden; }
+    .m-header { padding: 24px 24px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+    .m-header h3 { margin: 0; font: 600 22px/1.2 var(--font-display); color: var(--fg-1); letter-spacing: -0.005em; }
+    .m-header p { margin: 4px 0 0; font: 400 14px/1.45 var(--font-sans); color: var(--fg-3); }
+    .m-close { width: 32px; height: 32px; border: 0; border-radius: 8px; background: transparent; color: var(--fg-3); cursor: pointer; display: grid; place-items: center; flex-shrink: 0; }
+    .m-close:hover { background: var(--neutral-light); color: var(--brand-navy); }
+    .m-close svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .m-body { padding: 18px 24px 24px; font: 400 14px/1.5 var(--font-sans); color: var(--fg-2); flex: 1; overflow: auto; }
+    .m-footer { padding: 16px 24px; background: var(--neutral-surface); border-top: 1px solid var(--neutral-light); display: flex; justify-content: flex-end; gap: 10px; }
+
+    /* buttons */
+    .btn { font: 600 14px/1 var(--font-sans); border: 1.5px solid transparent; border-radius: 8px; padding: 11px 18px; cursor: pointer; }
+    .btn.primary { background: var(--brand-navy); color: #fff; }
+    .btn.secondary { background: #fff; color: var(--brand-navy); border-color: var(--brand-navy); }
+    .btn.destructive { background: var(--danger); color: #fff; }
+    .btn.ghost { background: transparent; color: var(--brand-navy); }
+
+    /* form fields inside */
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .field label { font: 700 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-1); }
+    .field input { font: 400 16px/1 var(--font-sans); padding: 12px 14px; border: 1.5px solid var(--neutral-light); border-radius: 8px; outline: none; }
+    .field input:focus { border-color: var(--brand-navy); box-shadow: var(--focus-ring); }
+
+    /* fake viewports for the demo */
+    .viewport {
+      background: #F3F5FA;
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .viewport.dim::before {
+      content: ""; position: absolute; inset: 0;
+      background: var(--backdrop-modal);
+    }
+    .viewport-page {
+      position: absolute; inset: 0;
+      padding: 16px;
+      display: flex; align-items: flex-start;
+      color: rgba(15,23,42,0.18);
+      font: 700 56px/1 var(--font-display);
+    }
+
+    /* modal centered in viewport */
+    .grid-modal { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .vp-modal { min-height: 420px; display: grid; place-items: center; }
+    .vp-modal .surface { position: relative; z-index: 1; }
+
+    /* sizes */
+    .size-sm { width: 400px; }
+    .size-md { width: 560px; }
+    .size-lg { width: 720px; }
+    .size-xl { width: 920px; max-width: 100%; }
+
+    /* drawer */
+    .vp-drawer { min-height: 480px; position: relative; padding: 0; }
+    .vp-drawer .drawer {
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: 480px;
+      background: #fff; box-shadow: var(--shadow-3);
+      border-radius: 16px 0 0 16px;
+      display: flex; flex-direction: column;
+      z-index: 2;
+    }
+    .vp-drawer .m-footer { border-top-left-radius: 0; }
+
+    /* sheet (bottom) */
+    .vp-sheet { min-height: 460px; position: relative; padding: 0; }
+    .vp-sheet .sheet {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      background: #fff; box-shadow: var(--shadow-3);
+      border-radius: 16px 16px 0 0;
+      display: flex; flex-direction: column;
+      max-height: 80%; z-index: 2;
+    }
+    .vp-sheet .handle {
+      width: 40px; height: 5px; border-radius: 999px;
+      background: var(--neutral-light);
+      margin: 10px auto 0;
+    }
+
+    /* confirm dialog warning icon */
+    .warn-ic {
+      width: 48px; height: 48px; border-radius: 999px;
+      background: var(--danger-bg); color: var(--danger);
+      display: grid; place-items: center; margin-bottom: 14px;
+    }
+    .warn-ic svg { width: 28px; height: 28px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* size demo header */
+    .size-tag {
+      font: 600 10px/1 var(--font-mono); padding: 4px 8px; border-radius: 999px;
+      background: var(--info-bg); color: var(--brand-navy); letter-spacing: 0.06em; text-transform: uppercase;
+      position: absolute; top: 10px; left: 12px; z-index: 3;
+    }
+
+    /* behaviors box */
+    .behaviors {
+      margin-top: 22px;
+      background: var(--neutral-surface);
+      border-radius: 16px;
+      padding: 16px 18px;
+      font: 400 12px/1.6 var(--font-sans);
+      color: var(--fg-2);
+    }
+    .behaviors h4 { margin: 0 0 8px; font: 700 11px/1 var(--font-mono); color: var(--fg-1); letter-spacing: 0.08em; text-transform: uppercase; }
+    .behaviors ul { margin: 0; padding-left: 18px; }
+
+    .specs {
+      margin-top: 14px;
+      background: var(--neutral-surface);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+      font: 400 12px/1.5 var(--font-sans); color: var(--fg-2);
+    }
+    .specs h4 { margin: 0 0 8px; font: 700 11px/1 var(--font-mono); color: var(--fg-1); letter-spacing: 0.08em; text-transform: uppercase; }
+    .specs ul { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .specs li { display: grid; grid-template-columns: 70px 1fr; gap: 6px; align-items: baseline; }
+    .specs li b { color: var(--fg-3); font: 500 11px/1.5 var(--font-mono); font-weight: 600; }
+    .specs li code { font: 500 12px/1.5 var(--font-mono); color: var(--fg-1); }
+  </style>
+</head>
+<body>
+
+<div class="head">
+  <span class="title">Modal & Drawer</span>
+  <span class="sub">Modal (4 sizes) · Confirm dialog · Drawer lateral · Bottom sheet — backdrop, focus trap, esc-close</span>
+</div>
+
+<!-- ============ MODAL ============ -->
+<p class="gname">Modal padrão · md (560px)</p>
+<div class="viewport vp-modal dim">
+  <div class="viewport-page">página atrás</div>
+  <div class="surface size-md" role="dialog" aria-modal="true">
+    <div class="m-header">
+      <div>
+        <h3>Novo lançamento</h3>
+        <p>Adicione manualmente um documento fiscal ao seu Arquivo Digital.</p>
+      </div>
+      <button class="m-close" aria-label="Fechar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="m-body">
+      <div class="field"><label>CNPJ</label><input value="12.345.678/0001-90"></div>
+      <div class="field"><label>Empresa</label><input placeholder="Razão social"></div>
+      <div class="field"><label>Valor (R$)</label><input placeholder="0,00"></div>
+    </div>
+    <div class="m-footer">
+      <button class="btn secondary">Cancelar</button>
+      <button class="btn primary">Iniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SIZES ============ -->
+<p class="gname">Sizes · sm 400 · md 560 · lg 720 · xl 920</p>
+<div class="grid-modal">
+  <div class="viewport vp-modal dim" style="min-height: 220px;">
+    <span class="size-tag">sm · 400</span>
+    <div class="surface size-sm">
+      <div class="m-header"><h3>Confirmação rápida</h3><button class="m-close" aria-label="Fechar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="m-body">Texto curto para decisão objetiva.</div>
+      <div class="m-footer"><button class="btn secondary">Cancelar</button><button class="btn primary">OK</button></div>
+    </div>
+  </div>
+  <div class="viewport vp-modal dim" style="min-height: 220px;">
+    <span class="size-tag">md · 560</span>
+    <div class="surface size-md">
+      <div class="m-header"><h3>Edição padrão</h3><button class="m-close" aria-label="Fechar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="m-body">Tamanho padrão para formulários de média complexidade (3–5 campos).</div>
+      <div class="m-footer"><button class="btn secondary">Cancelar</button><button class="btn primary">Salvar</button></div>
+    </div>
+  </div>
+  <div class="viewport vp-modal dim" style="min-height: 260px;">
+    <span class="size-tag">lg · 720</span>
+    <div class="surface size-lg">
+      <div class="m-header"><h3>Visualização detalhada</h3><button class="m-close" aria-label="Fechar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="m-body">Conteúdo extenso ou múltiplas colunas (revisão de NFe, comparativo).</div>
+      <div class="m-footer"><button class="btn secondary">Voltar</button><button class="btn primary">Aprovar</button></div>
+    </div>
+  </div>
+  <div class="viewport vp-modal dim" style="min-height: 260px;">
+    <span class="size-tag">xl · 920</span>
+    <div class="surface size-xl">
+      <div class="m-header"><h3>Editor full</h3><button class="m-close" aria-label="Fechar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="m-body">Para fluxos complexos com sidebar interna ou tabela embarcada.</div>
+      <div class="m-footer"><button class="btn secondary">Descartar</button><button class="btn primary">Publicar</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CONFIRM DIALOG ============ -->
+<p class="gname">Confirm dialog · 400 fixo · ação destrutiva</p>
+<div class="viewport vp-modal dim" style="min-height: 320px;">
+  <div class="surface size-sm" role="alertdialog">
+    <div class="m-header" style="padding-top: 20px;">
+      <div>
+        <div class="warn-ic">
+          <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3>Excluir esta nota fiscal?</h3>
+        <p>NFe 12.345 será removida permanentemente do Arquivo Digital. Esta ação não pode ser desfeita.</p>
+      </div>
+    </div>
+    <div class="m-footer">
+      <button class="btn secondary">Cancelar</button>
+      <button class="btn destructive">Excluir nota fiscal</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DRAWER ============ -->
+<p class="gname">Drawer lateral · md (480px) · direita</p>
+<div class="viewport vp-drawer dim" style="min-height: 460px; padding: 16px;">
+  <div class="viewport-page" style="position: absolute; padding: 16px;">conteúdo</div>
+  <div class="drawer">
+    <div class="m-header">
+      <div>
+        <h3>Detalhes · NFe 12.347</h3>
+        <p>Studio Vila Madá · emitida em 10/05/2026</p>
+      </div>
+      <button class="m-close" aria-label="Fechar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="m-body">
+      <p style="margin: 0 0 12px;">Tomador: Patrimonium Contabilidade Ltda</p>
+      <p style="margin: 0 0 12px;">CNPJ: 12.345.678/0001-90</p>
+      <p style="margin: 0 0 12px;">Natureza: Prestação de serviços contábeis</p>
+      <p style="margin: 0 0 12px;">Valor bruto: R$ 1.000,97</p>
+      <p style="margin: 0 0 12px;">Status fiscal: <b>Ativo</b></p>
+    </div>
+    <div class="m-footer">
+      <button class="btn ghost">Arquivar</button>
+      <button class="btn primary">Baixar XML</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BOTTOM SHEET ============ -->
+<p class="gname">Bottom sheet · mobile</p>
+<div class="viewport vp-sheet dim" style="min-height: 440px; padding: 16px; max-width: 420px;">
+  <div class="viewport-page" style="font-size: 36px; padding: 12px;">mobile</div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div class="m-header" style="padding-top: 16px;">
+      <div>
+        <h3>Filtrar documentos</h3>
+        <p>Aplicar critérios à sua lista atual.</p>
+      </div>
+      <button class="m-close" aria-label="Fechar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="m-body">
+      <div class="field"><label>Período</label><input value="01/05/2026 — 31/05/2026"></div>
+      <div class="field"><label>Status</label><input placeholder="Todos"></div>
+    </div>
+    <div class="m-footer">
+      <button class="btn ghost">Limpar</button>
+      <button class="btn primary">Aplicar filtros</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BEHAVIORS ============ -->
+<div class="behaviors">
+  <h4>Comportamentos (válidos para todos)</h4>
+  <ul>
+    <li><b>Escape</b> fecha o overlay.</li>
+    <li><b>Clique no backdrop</b> fecha — pode ser desativado em fluxos críticos (formulário com dados não salvos).</li>
+    <li><b>Focus trap</b> interno: Tab navega só dentro do overlay.</li>
+    <li><b>Ao fechar</b>, foco volta para o elemento que abriu (botão/ação).</li>
+    <li>Em ações destrutivas, o botão da ação leva <b>verbo concreto</b> ("Excluir nota fiscal"), nunca "Sim/OK".</li>
+  </ul>
+</div>
+
+<!-- ============ SPECS ============ -->
+<aside class="specs">
+  <div>
+    <h4>Modal</h4>
+    <ul>
+      <li><b>sm</b><code>400 px</code></li>
+      <li><b>md</b><code>560 px</code></li>
+      <li><b>lg</b><code>720 px</code></li>
+      <li><b>xl</b><code>920 px</code></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Drawer</h4>
+    <ul>
+      <li><b>sm</b><code>360 px</code></li>
+      <li><b>md</b><code>480 px</code></li>
+      <li><b>lg</b><code>640 px</code></li>
+      <li><b>radius</b><code>16 0 0 16</code></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Chrome</h4>
+    <ul>
+      <li><b>radius</b><code>16 · radius/md</code></li>
+      <li><b>shadow</b><code>shadow-3</code></li>
+      <li><b>padding</b><code>24 · space-6</code></li>
+      <li><b>backdrop</b><code>--backdrop-modal</code></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Sheet</h4>
+    <ul>
+      <li><b>radius top</b><code>16 16 0 0</code></li>
+      <li><b>handle</b><code>40 × 5 · --neutral-light</code></li>
+      <li><b>max-h</b><code>80% vh</code></li>
+    </ul>
+  </div>
+</aside>
+
+</body>
+</html>

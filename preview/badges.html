@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Badges</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 22px; background: #fff; display: flex; flex-direction: column; gap: 12px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font: 600 13px/1 var(--font-sans); }
+  .badge::before { content: ""; width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
+  .badge.success { background: var(--success-bg); color: var(--success); }
+  .badge.warning { background: var(--warning-bg); color: #B07012; }
+  .badge.danger  { background: var(--danger-bg); color: var(--danger); }
+  .badge.info    { background: #E0E7FF; color: var(--brand-navy); }
+  .badge.muted   { background: var(--bg-muted); color: var(--neutral-500); }
+  .badge.solid   { background: var(--brand-navy); color: #fff; padding: 8px 14px; }
+  .badge.solid::before { display:none; }
+  .pill { display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 999px; font: 600 13px/1 var(--font-sans); border: 1.5px solid var(--brand-navy); color: var(--brand-navy); }
+</style></head><body>
+  <div class="row">
+    <span class="badge success">Ativo</span>
+    <span class="badge warning">Vence em 7 dias</span>
+    <span class="badge danger">Vencido</span>
+    <span class="badge info">Em análise</span>
+    <span class="badge muted">Arquivado</span>
+  </div>
+  <div class="row">
+    <span class="pill">CNPJ verificado</span>
+    <span class="badge solid">Notificações</span>
+    <span class="pill">+3</span>
+  </div>
+</body></html>

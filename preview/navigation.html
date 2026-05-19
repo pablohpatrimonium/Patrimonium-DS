@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Navigation organisms</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 24px 28px 40px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+    .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 22px; }
+    .head .title { font: 700 18px/1 var(--font-display); }
+    .head .sub { font: 500 12px/1.4 var(--font-mono); color: var(--fg-3); }
+    .gname { font: 700 11px/1 var(--font-mono); color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; margin: 28px 0 12px; }
+
+    /* ============ SIDEBAR ============ */
+    .sb-grid { display: grid; grid-template-columns: 240px 64px 1fr; gap: 22px; align-items: flex-start; }
+    .sb {
+      background: var(--brand-navy-deep);
+      color: #fff;
+      padding: 20px 14px;
+      border-radius: 16px;
+      display: flex; flex-direction: column; gap: 4px;
+      min-height: 520px;
+    }
+    .sb .brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 14px; }
+    .sb .brand .logo { width: 30px; height: 30px; border-radius: 8px; background: var(--brand-green); color: var(--brand-navy); display: grid; place-items: center; font: 800 14px/1 var(--font-display); }
+    .sb .brand b { font: 700 15px/1 var(--font-sans); letter-spacing: -0.005em; }
+    .sb .brand span { font: 400 10px/1 var(--font-sans); color: var(--brand-green); letter-spacing: 0.06em; text-transform: uppercase; }
+    .sb .group {
+      font: 700 10px/1 var(--font-mono);
+      color: var(--neutral-light); opacity: 0.6;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 14px 10px 4px;
+    }
+    .sb .nav {
+      display: flex; align-items: center; gap: 12px;
+      padding: 9px 12px; border-radius: 8px;
+      color: var(--neutral-light);
+      font: 500 13px/1 var(--font-sans);
+      cursor: pointer;
+      position: relative;
+    }
+    .sb .nav:hover { background: var(--menu-hover-on-dark); color: #fff; }
+    .sb .nav.active { background: var(--brand-navy); color: #fff; }
+    .sb .nav.active::before {
+      content: ""; position: absolute; left: -14px; top: 50%; transform: translateY(-50%);
+      width: 3px; height: 18px; background: var(--brand-green); border-radius: 999px;
+    }
+    .sb .nav svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .sb .nav .count {
+      margin-left: auto;
+      font: 700 10px/1 var(--font-sans);
+      padding: 3px 7px; border-radius: 999px;
+      background: var(--brand-green); color: var(--brand-navy);
+    }
+
+    /* collapsed sidebar */
+    .sb.collapsed { padding: 20px 8px; align-items: center; }
+    .sb.collapsed .brand { padding: 4px 0 14px; gap: 0; flex-direction: column; }
+    .sb.collapsed .brand b, .sb.collapsed .brand span, .sb.collapsed .nav .label, .sb.collapsed .nav .count, .sb.collapsed .group { display: none; }
+    .sb.collapsed .nav { padding: 10px; justify-content: center; width: 44px; }
+    .sb.collapsed .nav.active::before { left: -8px; }
+
+    .sb-label {
+      display: block;
+      font: 600 11px/1 var(--font-mono);
+      color: var(--fg-3);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    /* mobile drawer */
+    .mob-frame {
+      width: 280px;
+      min-height: 520px;
+      background: #F3F5FA;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .mob-frame .topbar {
+      background: #fff;
+      border-bottom: 1px solid var(--neutral-light);
+      padding: 10px 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .mob-frame .ham { width: 32px; height: 32px; border-radius: 8px; background: var(--neutral-surface); display: grid; place-items: center; }
+    .mob-frame .ham svg { width: 18px; height: 18px; stroke: var(--brand-navy); fill: none; stroke-width: 1.75; }
+    .mob-frame .titlebar { font: 700 14px/1 var(--font-display); color: var(--fg-1); }
+    .mob-frame .drawer {
+      position: absolute; top: 0; bottom: 0; left: 0;
+      width: 70%;
+      background: var(--brand-navy-deep);
+      color: #fff;
+      padding: 16px 10px;
+      box-shadow: var(--shadow-3);
+    }
+    .mob-frame .scrim {
+      position: absolute; inset: 0;
+      background: var(--backdrop-modal);
+    }
+
+    /* ============ TOPBAR ============ */
+    .tb {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 20px;
+      background: #fff;
+      border: 1px solid var(--neutral-light);
+      border-radius: 16px;
+      height: 64px;
+      box-sizing: border-box;
+    }
+    .tb .search-wrap { flex: 1; max-width: 480px; position: relative; }
+    .tb .search-wrap input {
+      width: 100%; height: 40px;
+      padding: 0 38px 0 38px;
+      border: 1px solid var(--neutral-light); border-radius: 8px;
+      font: 400 13px/1 var(--font-sans);
+      background: #fff; outline: none;
+    }
+    .tb .search-wrap .ic { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; stroke: var(--neutral-strong); fill: none; stroke-width: 1.5; }
+    .tb .spacer { flex: 1; }
+    .tb .ibtn {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--neutral-light);
+      background: #fff;
+      display: grid; place-items: center;
+      cursor: pointer; position: relative;
+    }
+    .tb .ibtn svg { width: 18px; height: 18px; stroke: var(--fg-2); fill: none; stroke-width: 1.5; }
+    .tb .ibtn:hover { background: var(--neutral-surface); }
+    .tb .ibtn .badge-count {
+      position: absolute; top: -6px; right: -6px;
+      min-width: 18px; height: 18px;
+      padding: 0 5px; border-radius: 999px;
+      background: var(--danger); color: #fff;
+      font: 700 10px/18px var(--font-sans);
+      text-align: center;
+      border: 2px solid #fff;
+    }
+    .tb .avatar { width: 40px; height: 40px; border-radius: 999px; background: var(--brand-navy); color: #fff; display: grid; place-items: center; font: 700 13px/1 var(--font-sans); cursor: pointer; }
+
+    /* ============ DROPDOWNS ============ */
+    .dropdowns { display: grid; grid-template-columns: 360px 280px; gap: 22px; align-items: flex-start; }
+
+    .ddown {
+      background: #fff;
+      border: 1px solid var(--neutral-light);
+      border-radius: 8px;
+      box-shadow: var(--shadow-2);
+      overflow: hidden;
+    }
+    .ddown.notif { width: 360px; }
+    .ddown.avatar { width: 280px; }
+
+    .ddown .dd-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--neutral-light);
+    }
+    .ddown .dd-head .t { font: 700 13px/1 var(--font-sans); color: var(--fg-1); }
+    .ddown .dd-head .a { font: 600 12px/1 var(--font-sans); color: var(--brand-navy); cursor: pointer; }
+
+    .ddown .notif-item {
+      display: flex; gap: 12px; padding: 12px 14px;
+      border-bottom: 1px solid var(--neutral-light);
+      cursor: pointer;
+    }
+    .ddown .notif-item:hover { background: var(--menu-hover-on-light); }
+    .ddown .notif-item.unread { background: var(--info-bg); }
+    .ddown .notif-item .ic {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .ddown .notif-item .ic svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .ddown .notif-item .ic.success { background: var(--success-bg); color: var(--success); }
+    .ddown .notif-item .ic.warning { background: var(--warning-bg); color: #B07012; }
+    .ddown .notif-item .ic.info    { background: var(--info-bg); color: var(--brand-navy); }
+    .ddown .notif-item .body { flex: 1; min-width: 0; }
+    .ddown .notif-item .body .t { font: 600 13px/1.3 var(--font-sans); color: var(--fg-1); }
+    .ddown .notif-item .body .d { font: 400 12px/1.4 var(--font-sans); color: var(--fg-3); margin-top: 2px; }
+    .ddown .notif-item .body .ts {
+      font: 600 10px/1 var(--font-mono);
+      color: var(--neutral-light);
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-top: 4px;
+    }
+    .ddown .notif-item:last-child { border-bottom: 0; }
+
+    .ddown .dd-footer {
+      padding: 10px 14px;
+      text-align: center;
+      border-top: 1px solid var(--neutral-light);
+    }
+    .ddown .dd-footer a { font: 600 13px/1 var(--font-sans); color: var(--brand-navy); text-decoration: none; border: 0; }
+
+    /* avatar dropdown */
+    .ddown.avatar .av-head {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px;
+      border-bottom: 1px solid var(--neutral-light);
+    }
+    .ddown.avatar .av-head .ava { width: 40px; height: 40px; border-radius: 999px; background: var(--brand-navy); color: #fff; display: grid; place-items: center; font: 700 14px/1 var(--font-sans); }
+    .ddown.avatar .av-head .name { font: 600 14px/1.2 var(--font-sans); color: var(--fg-1); }
+    .ddown.avatar .av-head .email { font: 400 12px/1 var(--font-sans); color: var(--fg-3); margin-top: 2px; }
+
+    .ddown.avatar .av-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      font: 500 13px/1 var(--font-sans); color: var(--fg-1);
+      cursor: pointer;
+    }
+    .ddown.avatar .av-item:hover { background: var(--menu-hover-on-light); }
+    .ddown.avatar .av-item svg { width: 16px; height: 16px; stroke: var(--fg-2); fill: none; stroke-width: 1.5; }
+    .ddown.avatar .av-sep { height: 1px; background: var(--neutral-light); margin: 4px 0; }
+    .ddown.avatar .av-item.signout { color: var(--neutral-strong); }
+    .ddown.avatar .av-item.signout svg { stroke: var(--neutral-strong); }
+
+    /* specs */
+    .specs {
+      margin-top: 22px;
+      background: var(--neutral-surface);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+      font: 400 12px/1.5 var(--font-sans); color: var(--fg-2);
+    }
+    .specs h4 { margin: 0 0 8px; font: 700 11px/1 var(--font-mono); color: var(--fg-1); letter-spacing: 0.08em; text-transform: uppercase; }
+    .specs ul { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .specs li { display: grid; grid-template-columns: 90px 1fr; gap: 6px; align-items: baseline; }
+    .specs li b { color: var(--fg-3); font: 500 11px/1.5 var(--font-mono); font-weight: 600; }
+    .specs li code { font: 500 12px/1.5 var(--font-mono); color: var(--fg-1); }
+  </style>
+</head>
+<body>
+
+<div class="head">
+  <span class="title">Navigation organisms</span>
+  <span class="sub">Sidebar (3 estados) · Topbar (64px) · Notification dropdown · Avatar dropdown</span>
+</div>
+
+<!-- SIDEBAR -->
+<p class="gname">Sidebar · 3 estados</p>
+<div class="sb-grid">
+
+  <div>
+    <span class="sb-label">Expandida · 240</span>
+    <div class="sb">
+      <div class="brand">
+        <div class="logo">P</div>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <b>patrimonium</b>
+          <span>contabilidade</span>
+        </div>
+      </div>
+      <span class="group">Operação</span>
+      <div class="nav active">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span class="label">Visão geral</span>
+      </div>
+      <div class="nav">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span class="label">Documentos</span>
+        <span class="count">12</span>
+      </div>
+      <div class="nav">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20"/></svg>
+        <span class="label">Notas fiscais</span>
+      </div>
+      <div class="nav">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span class="label">Obrigações</span>
+      </div>
+
+      <span class="group">Produtos</span>
+      <div class="nav">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+        <span class="label">Radar</span>
+      </div>
+      <div class="nav">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span class="label">Arquivo Digital</span>
+      </div>
+      <div class="nav">
+        <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span class="label">Recuperação</span>
+      </div>
+
+      <span class="group">Conta</span>
+      <div class="nav">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span class="label">Configurações</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <span class="sb-label">Colapsada · 64</span>
+    <div class="sb collapsed">
+      <div class="brand"><div class="logo">P</div></div>
+      <div class="nav active" title="Visão geral"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+      <div class="nav" title="Documentos"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="nav" title="Notas fiscais"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20"/></svg></div>
+      <div class="nav" title="Obrigações"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+      <div class="nav" title="Radar"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <div class="nav" title="Arquivo Digital"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="nav" title="Recuperação"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+    </div>
+  </div>
+
+  <div>
+    <span class="sb-label">Mobile · drawer overlay</span>
+    <div class="mob-frame">
+      <div class="topbar">
+        <div class="ham"><svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
+        <span class="titlebar">Documentos</span>
+      </div>
+      <div class="scrim"></div>
+      <div class="drawer">
+        <div class="brand" style="padding: 4px 8px 14px; display:flex; align-items:center; gap:10px;">
+          <div class="logo" style="width:30px; height:30px; border-radius: 8px; background: var(--brand-green); color: var(--brand-navy); display: grid; place-items: center; font: 800 14px/1 var(--font-display);">P</div>
+          <b style="font: 700 14px/1 var(--font-sans);">patrimonium</b>
+        </div>
+        <div class="nav active" style="padding: 9px 12px; border-radius: 8px; color: #fff; background: var(--brand-navy); font: 500 13px/1 var(--font-sans); display:flex; align-items:center; gap:12px;">
+          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5" style="width:18px; height:18px;"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Visão geral
+        </div>
+        <div class="nav" style="padding: 9px 12px; color: var(--neutral-light); font: 500 13px/1 var(--font-sans); display:flex; align-items:center; gap:12px;">
+          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5" style="width:18px; height:18px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Documentos
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<p class="gname">Topbar · 64px</p>
+<div class="tb">
+  <div class="search-wrap">
+    <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input placeholder="Buscar CNPJ, nota fiscal, certificado…">
+  </div>
+  <div class="spacer"></div>
+  <button class="ibtn" title="Notificações">
+    <svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+    <span class="badge-count">4</span>
+  </button>
+  <button class="ibtn" title="Ajuda">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  </button>
+  <div class="avatar">PH</div>
+</div>
+
+<!-- DROPDOWNS -->
+<p class="gname">Dropdowns · notification + avatar</p>
+<div class="dropdowns">
+
+  <div class="ddown notif">
+    <div class="dd-head">
+      <span class="t">Notificações · 4 não lidas</span>
+      <span class="a">Marcar todas como lidas</span>
+    </div>
+    <div class="notif-item unread">
+      <div class="ic success"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="body">
+        <div class="t">Recuperação aprovada</div>
+        <div class="d">R$ 12.480,00 creditado · Mendes &amp; Cia</div>
+        <div class="ts">há 4 min</div>
+      </div>
+    </div>
+    <div class="notif-item unread">
+      <div class="ic warning"><svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <div class="body">
+        <div class="t">DAS vence em 3 dias</div>
+        <div class="d">Agende o pagamento até 12/11</div>
+        <div class="ts">há 1 h</div>
+      </div>
+    </div>
+    <div class="notif-item">
+      <div class="ic info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+      <div class="body">
+        <div class="t">Sincronização concluída</div>
+        <div class="d">348 documentos importados nos últimos 90 dias</div>
+        <div class="ts">ontem · 09:14</div>
+      </div>
+    </div>
+    <div class="dd-footer"><a href="#">Ver todas as notificações</a></div>
+  </div>
+
+  <div class="ddown avatar">
+    <div class="av-head">
+      <div class="ava">PH</div>
+      <div>
+        <div class="name">Pablo Henrique</div>
+        <div class="email">pabloh@patrimonium…</div>
+      </div>
+    </div>
+    <div class="av-item">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+      Perfil
+    </div>
+    <div class="av-item">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Configurações
+    </div>
+    <div class="av-item">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Ajuda
+    </div>
+    <div class="av-sep"></div>
+    <div class="av-item signout">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Sair
+    </div>
+  </div>
+
+</div>
+
+<!-- SPECS -->
+<aside class="specs">
+  <div>
+    <h4>Sidebar</h4>
+    <ul>
+      <li><b>expandida</b><code>240 px</code></li>
+      <li><b>colapsada</b><code>64 px</code></li>
+      <li><b>bg</b><code>--brand-navy-deep</code></li>
+      <li><b>ativo</b><code>--brand-navy</code></li>
+      <li><b>indicador</b><code>3 × 18 · --brand-green</code></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Topbar</h4>
+    <ul>
+      <li><b>altura</b><code>64 px</code></li>
+      <li><b>search</b><code>40 px · inline</code></li>
+      <li><b>ibtn</b><code>40 × 40 · radius 8</code></li>
+      <li><b>avatar</b><code>40 px</code></li>
+      <li><b>badge</b><code>--danger</code></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Notif dropdown</h4>
+    <ul>
+      <li><b>width</b><code>360 px</code></li>
+      <li><b>shadow</b><code>shadow-2</code></li>
+      <li><b>unread</b><code>--info-bg</code></li>
+      <li><b>ícone</b><code>cor semântica + -bg</code></li>
+      <li><b>timestamp</b><code>caption upper</code></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Avatar dropdown</h4>
+    <ul>
+      <li><b>width</b><code>280 px</code></li>
+      <li><b>header</b><code>av md + nome + email</code></li>
+      <li><b>item</b><code>10 × 14 pad · ícone 16</code></li>
+      <li><b>sair</b><code>--neutral-strong</code></li>
+    </ul>
+  </div>
+</aside>
+
+</body>
+</html>

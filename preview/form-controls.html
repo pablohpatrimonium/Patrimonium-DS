@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Form controls</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px 28px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+  .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 18px; }
+  .head .title { font: 700 18px/1 var(--font-display); }
+  .head .sub { font: 500 12px/1.3 var(--font-mono); color: var(--fg-3); letter-spacing: 0.02em; }
+
+  /* Layout: 3 columns of controls + side specs */
+  .layout { display: grid; grid-template-columns: 1fr 1fr 1fr 280px; gap: 24px 28px; align-items: flex-start; }
+  .group { display: flex; flex-direction: column; gap: 12px; }
+  .group .gname { font: 700 11px/1 var(--font-mono); color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* Each row = control + label */
+  .item { display: inline-flex; align-items: center; gap: 8px; font: 500 14px/1 var(--font-sans); color: var(--fg-1); position: relative; cursor: pointer; }
+  .item.disabled-text { color: var(--neutral-light); }
+  .item.error-text { color: var(--danger); }
+
+  /* Hit area — 44×44 expanded around the indicator (visualized only on .item.hit) */
+  .item::before {
+    /* invisible hit-area expander — represents the 44px accessibility target */
+    content: ""; position: absolute; left: -13px; top: 50%;
+    width: 44px; height: 44px; transform: translateY(-50%);
+    /* not visible by default */
+  }
+
+  /* ============ CHECKBOX ============ */
+  /* size 18, radius 4 (mini-controle, < 28px), border 1.5px, fill #1A3375 */
+  .cb { width: 18px; height: 18px; border: 1.5px solid var(--neutral-light); border-radius: 4px; background: #fff; position: relative; display: inline-block; flex-shrink: 0; transition: background 120ms, border-color 120ms; }
+  .cb.checked { background: var(--brand-navy); border-color: var(--brand-navy); }
+  .cb.checked::after { content: ""; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: solid #fff; border-width: 0 1.75px 1.75px 0; transform: rotate(45deg); }
+  .cb.indeterminate { background: var(--brand-navy); border-color: var(--brand-navy); }
+  .cb.indeterminate::after { content: ""; position: absolute; left: 3px; top: 7.25px; width: 10px; height: 1.75px; background: #fff; }
+  .cb.hover { border-color: var(--brand-navy); box-shadow: var(--focus-ring); }
+  .cb.disabled { background: var(--neutral-light); border-color: var(--neutral-light); }
+  .cb.disabled.checked::after { border-color: var(--neutral-light); }
+  .cb.error { border-color: var(--danger); }
+  .cb.error.checked { background: var(--danger); border-color: var(--danger); }
+
+  /* ============ RADIO ============ */
+  /* size 18, pill, border 1.5px, dot #1A3375 inset 3 */
+  .rd { width: 18px; height: 18px; border: 1.5px solid var(--neutral-light); border-radius: 999px; background: #fff; position: relative; display: inline-block; flex-shrink: 0; transition: border-color 120ms; }
+  .rd.checked { border-color: var(--brand-navy); }
+  .rd.checked::after { content: ""; position: absolute; inset: 3px; background: var(--brand-navy); border-radius: 999px; }
+  .rd.hover { border-color: var(--brand-navy); box-shadow: var(--focus-ring); }
+  .rd.disabled { background: var(--neutral-light); border-color: var(--neutral-light); }
+  .rd.disabled.checked::after { background: var(--neutral-light); }
+  .rd.error { border-color: var(--danger); }
+  .rd.error.checked::after { background: var(--danger); }
+
+  /* ============ SWITCH ============ */
+  /* track 36×20, pill, knob 16, off=line, on=navy */
+  .sw { width: 36px; height: 20px; background: var(--neutral-light); border-radius: 999px; position: relative; display: inline-block; flex-shrink: 0; transition: background 120ms; }
+  .sw::after { content: ""; position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; background: #fff; border-radius: 999px; box-shadow: 0 1px 2px rgba(15,23,42,0.2); transition: left 120ms; }
+  .sw.on { background: var(--brand-navy); }
+  .sw.on::after { left: 18px; }
+  .sw.hover { box-shadow: var(--focus-ring); }
+  .sw.disabled { background: var(--neutral-light); }
+  .sw.disabled.on { background: var(--neutral-light); }
+  .sw.error { background: var(--danger-bg); }
+  .sw.error.on { background: var(--danger-bg); }
+  .sw.error.on::after { background: #fff; }
+
+  /* ============ SPECS PANEL ============ */
+  .specs {
+    background: var(--neutral-surface);
+    border-radius: 16px;
+    padding: 16px 16px 14px;
+    display: flex; flex-direction: column; gap: 14px;
+    font: 400 12px/1.45 var(--font-sans);
+    color: var(--fg-2);
+  }
+  .specs h4 { margin: 0 0 6px; font: 700 11px/1 var(--font-mono); color: var(--fg-1); letter-spacing: 0.08em; text-transform: uppercase; }
+  .specs ul { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .specs li { display: grid; grid-template-columns: 110px 1fr; gap: 8px; align-items: baseline; }
+  .specs li b { color: var(--fg-3); font: 500 11px/1.45 var(--font-mono); }
+  .specs li code { font: 500 12px/1.45 var(--font-mono); color: var(--fg-1); }
+
+  .hit-illustration { display: flex; align-items: center; gap: 12px; padding-top: 10px; border-top: 1px solid var(--neutral-light); }
+  .hit-illustration .h { width: 44px; height: 44px; border: 1px dashed var(--brand-navy); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
+  .hit-illustration .h .cb { box-shadow: none !important; }
+  .hit-illustration p { margin: 0; font: 400 11px/1.4 var(--font-sans); color: var(--fg-3); }
+  .hit-illustration p b { color: var(--fg-1); font-weight: 600; }
+</style></head><body>
+  <div class="head">
+    <span class="title">Form controls</span>
+    <span class="sub">Checkbox · Radio · Switch — estados default, checked, hover/foco, erro, desativado</span>
+  </div>
+
+  <div class="layout">
+
+    <!-- ============ CHECKBOX ============ -->
+    <div class="group">
+      <span class="gname">Checkbox</span>
+      <label class="item"><span class="cb"></span> Não selecionado</label>
+      <label class="item"><span class="cb checked"></span> Selecionado</label>
+      <label class="item"><span class="cb indeterminate"></span> Indeterminado</label>
+      <label class="item"><span class="cb hover"></span> Hover/Foco</label>
+      <label class="item"><span class="cb hover checked"></span> Hover/Foco + selecionado</label>
+      <label class="item error-text"><span class="cb error"></span> Erro</label>
+      <label class="item error-text"><span class="cb error checked"></span> Erro + selecionado</label>
+      <label class="item disabled-text"><span class="cb disabled"></span> Desativado</label>
+      <label class="item disabled-text"><span class="cb disabled checked"></span> Desativado + selecionado</label>
+    </div>
+
+    <!-- ============ RADIO ============ -->
+    <div class="group">
+      <span class="gname">Radio</span>
+      <label class="item"><span class="rd"></span> Não selecionado</label>
+      <label class="item"><span class="rd checked"></span> Selecionado</label>
+      <label class="item"><span class="rd hover"></span> Hover/Foco</label>
+      <label class="item"><span class="rd hover checked"></span> Hover/Foco + selecionado</label>
+      <label class="item error-text"><span class="rd error"></span> Erro</label>
+      <label class="item error-text"><span class="rd error checked"></span> Erro + selecionado</label>
+      <label class="item disabled-text"><span class="rd disabled"></span> Desativado</label>
+      <label class="item disabled-text"><span class="rd disabled checked"></span> Desativado + selecionado</label>
+    </div>
+
+    <!-- ============ SWITCH ============ -->
+    <div class="group">
+      <span class="gname">Switch</span>
+      <label class="item"><span class="sw"></span> Off</label>
+      <label class="item"><span class="sw on"></span> On</label>
+      <label class="item"><span class="sw hover"></span> Hover/Foco · Off</label>
+      <label class="item"><span class="sw hover on"></span> Hover/Foco · On</label>
+      <label class="item error-text"><span class="sw error"></span> Erro · Off</label>
+      <label class="item error-text"><span class="sw error on"></span> Erro · On</label>
+      <label class="item disabled-text"><span class="sw disabled"></span> Desativado · Off</label>
+      <label class="item disabled-text"><span class="sw disabled on"></span> Desativado · On</label>
+    </div>
+
+    <!-- ============ SPECS ============ -->
+    <aside class="specs">
+      <div>
+        <h4>Checkbox</h4>
+        <ul>
+          <li><b>indicator</b><code>18 × 18 px</code></li>
+          <li><b>radius</b><code>4 px</code> (mini-controle &lt; 28)</li>
+          <li><b>border</b><code>1.5 px · --neutral-light</code></li>
+          <li><b>fill checked</b><code>#1A3375 · --brand-navy</code></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Radio</h4>
+        <ul>
+          <li><b>indicator</b><code>18 × 18 px</code></li>
+          <li><b>radius</b><code>999 px · --radius-pill</code></li>
+          <li><b>border</b><code>1.5 px · --neutral-light</code></li>
+          <li><b>dot</b><code>inset 3 · --brand-navy</code></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Switch</h4>
+        <ul>
+          <li><b>track</b><code>36 × 20 px</code></li>
+          <li><b>knob</b><code>16 × 16 px</code></li>
+          <li><b>radius</b><code>999 px · --radius-pill</code></li>
+          <li><b>off / on</b><code>--neutral-light / --brand-navy</code></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Comuns</h4>
+        <ul>
+          <li><b>gap label</b><code>8 px · --space-2</code></li>
+          <li><b>foco</b><code>--focus-ring (navy @ 18%)</code></li>
+          <li><b>erro</b><code>border --danger</code></li>
+        </ul>
+      </div>
+      <div class="hit-illustration">
+        <div class="h"><span class="cb"></span></div>
+        <p>Hit area mínima <b>44 × 44 px</b> em todos — mesmo com indicator de 18.</p>
+      </div>
+    </aside>
+
+  </div>
+</body></html>

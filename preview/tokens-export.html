@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Tokens export</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 26px 32px 40px; background: #fff; font-family: var(--font-sans); color: var(--fg-1); }
+    .head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 24px; }
+    .head .title { font: 700 22px/1 var(--font-display); letter-spacing: -0.01em; }
+    .head .sub   { font: 400 13px/1.45 var(--font-sans); color: var(--neutral-strong); max-width: 720px; }
+
+    .section { margin-bottom: 24px; }
+    .section h3 {
+      margin: 0 0 10px;
+      font: 700 11px/1 var(--font-mono);
+      color: var(--fg-3); letter-spacing: 0.08em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section h3 .n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 999px; background: var(--brand-navy); color: #fff; font-weight: 700; }
+    .section p {
+      margin: 0 0 12px;
+      font: 400 14px/1.55 var(--font-sans);
+      color: var(--neutral-strong);
+      max-width: 700px;
+    }
+    .section ul {
+      margin: 0; padding-left: 18px;
+      font: 400 14px/1.55 var(--font-sans);
+      color: var(--neutral-strong);
+    }
+    .section ul li { margin-bottom: 4px; }
+    .section ul li b { color: var(--fg-1); font-weight: 600; }
+
+    pre {
+      background: var(--brand-navy-deep);
+      color: #C8C8CC;
+      padding: 18px 20px;
+      border-radius: 16px;
+      overflow: auto;
+      font: 500 12.5px/1.6 var(--font-mono);
+      max-width: 760px;
+      margin: 0;
+    }
+    pre .key   { color: #BFD7FF; }
+    pre .str   { color: var(--brand-green); }
+    pre .num   { color: #F5C56D; }
+    pre .pun   { color: #C8C8CC; }
+    pre .com   { color: rgba(255,255,255,0.4); font-style: italic; }
+
+    .download {
+      display: inline-flex; align-items: center; gap: 10px;
+      font: 600 14px/1 var(--font-sans);
+      background: var(--brand-navy); color: #fff;
+      border: 0; border-radius: 8px;
+      padding: 12px 18px;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+    .download svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .download:hover { background: #122555; border: 0; }
+  </style>
+</head>
+<body>
+
+<div class="head">
+  <span class="title">Tokens export</span>
+  <span class="sub">Source of truth dos tokens em formato JSON compatível com Style Dictionary / Tokens Studio. Exportado a cada minor release.</span>
+</div>
+
+<!-- 1 -->
+<div class="section">
+  <h3><span class="n">1</span> Formato de export</h3>
+  <p>Tokens em formato hierárquico JSON. Cada folha tem <code>value</code> (o valor real) e <code>type</code> (categoria semântica). Estrutura compatível com <b>Style Dictionary</b> e <b>Tokens Studio</b> for Figma.</p>
+<pre><span class="pun">{</span>
+  <span class="key">"color"</span><span class="pun">:</span> <span class="pun">{</span>
+    <span class="key">"brand"</span><span class="pun">:</span> <span class="pun">{</span>
+      <span class="key">"blue"</span><span class="pun">:</span>  <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"#1A3375"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"color"</span> <span class="pun">},</span>
+      <span class="key">"green"</span><span class="pun">:</span> <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"#00FCA8"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"color"</span> <span class="pun">}</span>
+    <span class="pun">},</span>
+    <span class="key">"neutral"</span><span class="pun">:</span> <span class="pun">{</span>
+      <span class="key">"surface"</span><span class="pun">:</span> <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"#F7F8FB"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"color"</span> <span class="pun">},</span>
+      <span class="key">"light"</span><span class="pun">:</span>   <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"#C8C8CC"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"color"</span> <span class="pun">},</span>
+      <span class="key">"strong"</span><span class="pun">:</span>  <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"#3D3D3D"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"color"</span> <span class="pun">}</span>
+    <span class="pun">},</span>
+    <span class="key">"state"</span><span class="pun">:</span> <span class="pun">{</span>
+      <span class="key">"success"</span><span class="pun">:</span>     <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"#1F8F5C"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"color"</span> <span class="pun">},</span>
+      <span class="key">"success-bg"</span><span class="pun">:</span>  <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"#E6F7EF"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"color"</span> <span class="pun">}</span>
+    <span class="pun">}</span>
+  <span class="pun">},</span>
+  <span class="key">"space"</span><span class="pun">:</span> <span class="pun">{</span>
+    <span class="key">"1"</span><span class="pun">:</span> <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"4px"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"spacing"</span> <span class="pun">},</span>
+    <span class="key">"2"</span><span class="pun">:</span> <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"8px"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"spacing"</span> <span class="pun">}</span>
+  <span class="pun">},</span>
+  <span class="key">"radius"</span><span class="pun">:</span> <span class="pun">{</span>
+    <span class="key">"sm"</span><span class="pun">:</span>   <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"8px"</span><span class="pun">,</span>   <span class="key">"type"</span><span class="pun">:</span> <span class="str">"borderRadius"</span> <span class="pun">},</span>
+    <span class="key">"md"</span><span class="pun">:</span>   <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"16px"</span><span class="pun">,</span>  <span class="key">"type"</span><span class="pun">:</span> <span class="str">"borderRadius"</span> <span class="pun">},</span>
+    <span class="key">"lg"</span><span class="pun">:</span>   <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"32px"</span><span class="pun">,</span>  <span class="key">"type"</span><span class="pun">:</span> <span class="str">"borderRadius"</span> <span class="pun">},</span>
+    <span class="key">"pill"</span><span class="pun">:</span> <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"999px"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"borderRadius"</span> <span class="pun">}</span>
+  <span class="pun">},</span>
+  <span class="key">"typography"</span><span class="pun">:</span> <span class="pun">{</span>
+    <span class="key">"display"</span><span class="pun">:</span> <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"800 56px/1.1 'RNS Sanz'"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"typography"</span> <span class="pun">},</span>
+    <span class="key">"h1"</span><span class="pun">:</span>      <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"700 40px/1.1 'RNS Sanz'"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"typography"</span> <span class="pun">},</span>
+    <span class="key">"body"</span><span class="pun">:</span>    <span class="pun">{</span> <span class="key">"value"</span><span class="pun">:</span> <span class="str">"400 16px/1.5 'RNS Sanz'"</span><span class="pun">,</span> <span class="key">"type"</span><span class="pun">:</span> <span class="str">"typography"</span> <span class="pun">}</span>
+  <span class="pun">}</span>
+<span class="pun">}</span></pre>
+  <a class="download" href="../tokens.json" download>
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Baixar tokens.json
+  </a>
+</div>
+
+<!-- 2 -->
+<div class="section">
+  <h3><span class="n">2</span> Como consumir</h3>
+  <ul>
+    <li><b>Importar</b> <code>tokens.json</code> no projeto.</li>
+    <li><b>Gerar</b> CSS variables via Style Dictionary build (ou TS direto).</li>
+    <li><b>Usar</b> as variáveis como <code>--color-brand-blue</code>, <code>--space-1</code>, <code>--radius-sm</code>, etc.</li>
+    <li><b>Sem hex literais</b> em código de produção — sempre via token.</li>
+  </ul>
+</div>
+
+<!-- 3 -->
+<div class="section">
+  <h3><span class="n">3</span> Sincronização</h3>
+  <ul>
+    <li>Tokens vivem no <code>.fig</code> como source of truth.</li>
+    <li>Export manual a cada <b>minor release</b> (1.0, 1.1, etc.).</li>
+    <li>Patch releases (1.0.0 → 1.0.1) não geram novo export se não tocarem tokens.</li>
+    <li>Sempre versionar o arquivo: <code>tokens-v1.0.json</code>, <code>tokens-v1.1.json</code>.</li>
+  </ul>
+</div>
+
+</body>
+</html>
