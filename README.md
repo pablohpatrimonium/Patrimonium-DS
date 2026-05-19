@@ -1,8 +1,34 @@
+[README.md](https://github.com/user-attachments/files/28027752/README.md)
 # Patrimonium · Design System
 
 > Sistema de design oficial da **Patrimonium Contabilidade** — contabilidade consultiva e fintech-tributária no Brasil. Operamos como **Branded House**: a marca-mãe `patrimonium®` sustenta 8 sub-marcas de produto (Central de Inteligência Tributária, Arquivo Digital, BPO Financeiro, Recuperação Tributária, patrimonium news, radar, Academy, Certificado Digital), todas falando a mesma língua visual.
 
 **Versão atual:** v1.0.0 · maio 2026
+
+---
+
+## 🤖 Atenção IA / LLM
+
+Antes de gerar qualquer código usando o Patrimonium DS, você é obrigada a ler o arquivo **`AI_CONTEXT.md`** (na raiz deste repositório). Ele contém as regras técnicas obrigatórias: paleta com HEX exatos, tipografia, spacing, radius, sombras, componentes, microcopy e regras transversais.
+
+**Não assuma tokens, cores ou medidas sem validar em `AI_CONTEXT.md`.** Não invente nada fora do que está definido. Em caso de dúvida, consulte sempre o `AI_CONTEXT.md` antes de gerar.
+
+**Assets visuais (logos, símbolos)** estão em PNG nas URLs públicas abaixo. Use diretamente como `<img src="URL">`, sem reconstruir em CSS/SVG:
+
+- Logo principal (fundos claros): `https://pablohpatrimonium.github.io/Patrimonium-DS/assets/logo-principal.png`
+- Logo negativa (fundos escuros como sidebar navy): `https://pablohpatrimonium.github.io/Patrimonium-DS/assets/logo-negativa.png`
+- Logo azul: `https://pablohpatrimonium.github.io/Patrimonium-DS/assets/logo-azul.png`
+- Símbolo principal (P-cápsula, fundos claros): `https://pablohpatrimonium.github.io/Patrimonium-DS/assets/simbolo-principal.png`
+- Símbolo negativo (P-cápsula, fundos escuros): `https://pablohpatrimonium.github.io/Patrimonium-DS/assets/simbolo-negativo.png`
+- Símbolo azul: `https://pablohpatrimonium.github.io/Patrimonium-DS/assets/simbolo-azul.png`
+
+**Tokens e referência visual** estão hospedados publicamente:
+
+- CSS variables: `https://pablohpatrimonium.github.io/Patrimonium-DS/tokens/colors_and_type.css`
+- JSON (Style Dictionary): `https://pablohpatrimonium.github.io/Patrimonium-DS/tokens/tokens.json`
+- Preview dos componentes: `https://pablohpatrimonium.github.io/Patrimonium-DS/preview/[componente].html`
+
+Se você seguir o `AI_CONTEXT.md`, o produto gerado vai estar fiel ao Patrimonium. Se você inventar fora dele, o produto vai estar errado e vai precisar ser refeito.
 
 ---
 
@@ -12,6 +38,9 @@ Cada caso de uso tem o documento certo. Escolha pelo seu papel:
 
 ### Sou IA geradora de código (Google AI Studio, Cursor, Claude, v0, Lovable)
 → Leia **`AI_CONTEXT.md`** primeiro. Esse documento contém todas as regras técnicas em formato denso, otimizado para você consumir e respeitar.
+
+### Sou colaborador da Patrimonium usando IA para construir produto
+→ Use o **`PROMPT_BOILERPLATE.md`**. Copie o texto pronto e cole no início da conversa com qualquer IA. Você não precisa entender o DS — o boilerplate faz a IA respeitá-lo automaticamente.
 
 ### Sou desenvolvedor
 → Importe **`tokens/colors_and_type.css`** no projeto (CSS variables prontas). Ou **`tokens/tokens.json`** se usar Style Dictionary / Tokens Studio. Consulte `AI_CONTEXT.md` para regras de aplicação.
@@ -34,6 +63,7 @@ patrimonium-design-system/
 │
 ├── README.md                  ← Este arquivo (capa)
 ├── AI_CONTEXT.md              ← Documento técnico denso (regras completas)
+├── PROMPT_BOILERPLATE.md      ← Texto pronto pra colaboradores colarem na IA
 │
 ├── tokens/
 │   ├── colors_and_type.css    ← Tokens em CSS variables
@@ -41,16 +71,22 @@ patrimonium-design-system/
 │
 ├── fonts/                     ← RNS Sanz (7 pesos em .woff)
 │
-├── assets/
-│   └── logos/                 ← Logos PNG da marca
+├── assets/                    ← Logos PNG da marca
 │
-├── preview/                   ← HTMLs de referência visual (30 componentes)
+├── preview/                   ← HTMLs de referência visual dos componentes
+│
+├── brand-book/                ← Apresentação visual completa do DS
+│
+├── templates/                 ← Páginas 404 e 500
+│
+├── ui_kits/contabilidade-app/ ← App Dashboard Light e Dark (HTML)
 │
 └── docs/
     ├── PRINCIPLES.md          ← 7 princípios escritos
     ├── CHANGELOG.md           ← Histórico do DS
     ├── CONTRIBUTING.md        ← Como contribuir
-    └── ROADMAP.md             ← Próximas versões
+    ├── ROADMAP.md             ← Próximas versões
+    └── SKILL.md               ← Manifesto de skill
 ```
 
 ---
@@ -123,11 +159,14 @@ Detalhe em `docs/PRINCIPLES.md`.
 
 ## Hospedagem dos HTMLs de preview
 
-Os arquivos em `preview/` são referências visuais renderizadas. Para vê-los:
+Os arquivos em `preview/` são referências visuais renderizadas. Acesse via:
 
-- **GitHub Pages** (recomendado): ative em Settings → Pages e os HTMLs ficam acessíveis via `https://[org].github.io/patrimonium-design-system/preview/`. Tudo funciona normalmente.
-- **Servidor local:** `python3 -m http.server 8080` na raiz do repo, depois acesse `http://localhost:8080/preview/`.
-- **Abrir direto do disco:** o browser bloqueia carregamento de fontes locais por segurança — os HTMLs aparecem sem estilo. Use uma das opções acima.
+`https://pablohpatrimonium.github.io/Patrimonium-DS/preview/[componente].html`
+
+Exemplos:
+- `.../preview/buttons.html` — botões em todos os estados
+- `.../preview/data-table.html` — tabela completa
+- `.../preview/modal-drawer.html` — modais e drawers
 
 ---
 
