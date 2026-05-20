@@ -1,3 +1,4 @@
+[AI_CONTEXT (1).md](https://github.com/user-attachments/files/28068190/AI_CONTEXT.1.md)
 # Patrimonium Design System · AI Context
 
 > Documento técnico denso · otimizado para consumo por IAs geradoras de código (Google AI Studio, Cursor, Claude, v0, Lovable, etc.).
@@ -36,17 +37,91 @@ Recursos complementares neste repositório:
 
 ## 2. PALETA DE CORES (HEX exatos, sem subtons)
 
-### Brand principais (sagradas)
-- `--brand-blue` `#1A3375` — Patrimonium Blue, primária, headlines, botões padrão, links, ícones institucionais
-- `--brand-green` `#00FCA8` — Patrimonium Green, acento, P-cápsula, affirmative, status "ativo/positivo"
-- `--brand-white` `#FFFFFF` — Branco, fundo principal do produto
+### ⚠ ATENÇÃO CRÍTICA — leia antes de aplicar qualquer cor
 
-### Brand apoio (6, sem subtons)
-- `--brand-navy-deep` `#0B1B3F` — Navy escuríssimo, fundo invertido, dark mode, hero
-- `--brand-navy-soft` `#3059AF` — Navy médio, raro
-- `--brand-teal` `#0C998F` — Teal, data viz, accents secundários
-- `--brand-cyan` `#1AFFFF` — Ciano luminoso, raro
-- `--brand-neutral-dark` `#3D3D3D` — Neutro escuro, texto corpo
+A Patrimonium tem **3 cores de marca**, mas IAs (incluindo você) tendem a errar em duas direções específicas. Esta seção existe para evitar exatamente esses erros:
+
+**ERRO #1 — Substituir Patrimonium Blue por Navy escuríssimo.**
+IAs aprendem que "app financeiro profissional = navy quase preto" (Linear, Stripe, Notion). Quando geram produto Patrimonium, puxam essa convenção e usam `--brand-navy-deep` (`#0B1B3F`) onde deveriam usar `--brand-blue` (`#1A3375`). **Isso está errado.** A cor primária da Patrimonium é o **Patrimonium Blue `#1A3375`**, não o Navy escuríssimo. Navy escuríssimo é uma cor de apoio com uso muito restrito (ver hierarquia abaixo).
+
+**ERRO #2 — Esquecer o Patrimonium Green.**
+IAs tratam verde como "cor especial reservada" e o usam só em casos raros. **Isso também está errado.** Verde é cor de marca sagrada e deve aparecer em pelo menos um elemento de cada tela: counter, dot de status ativo, faixa lateral de item ativo, badge afirmativo, P-cápsula no logo. Se a tela não tem verde em lugar algum, falta identidade Patrimonium.
+
+**Antes de gerar:** releia a hierarquia prescritiva abaixo. Não confie em intuição de "design profissional genérico". A Patrimonium tem identidade própria e ela é vibrante (azul saturado + verde neon), não sóbria-quase-preta.
+
+---
+
+### Brand principais (sagradas — uso prescritivo)
+
+**`--brand-blue` `#1A3375` — Patrimonium Blue**
+
+A cor primária absoluta do sistema. Usar em:
+- Sidebar do app (fundo)
+- Header / topbar do app
+- KPI cards principais (fundo de card destacado)
+- Banner global institucional
+- Botão primary (default — qualquer ação principal)
+- Título H1 e H2 sobre fundo claro
+- Logo institucional (texto "patrimonium®")
+- Indicador de elemento ativo (não-affirmative)
+- Texto de link em corpo
+- Ícone de destaque
+
+**Regra prática:** se você está em dúvida entre `--brand-blue` e `--brand-navy-deep`, **sempre escolha `--brand-blue`**. Navy escuríssimo é exceção, não default.
+
+**`--brand-green` `#00FCA8` — Patrimonium Green**
+
+Cor de marca sagrada. Acento que carrega a identidade. Usar em:
+- Selo P-cápsula (sempre — é o miolo da marca)
+- Botão affirmative (recuperação aprovada, "iniciar análise", "ver oportunidades")
+- Faixa lateral de 3px indicando item ativo em sidebar
+- Dot de status "ativo / positivo / saudável"
+- Counter de notificações em pill (`12` ao lado de "Documentos")
+- Badge de variação positiva ("+18% vs Q3")
+- Destaque de valor recuperado em texto sobre fundo navy
+
+**Regra de presença:** o verde deve aparecer em **pelo menos 1 elemento por tela**, em qualquer oportunidade natural (item ativo, status positivo, ação afirmativa, counter, dot). Tela sem verde não é tela Patrimonium completa.
+
+**Regra de contraste:** verde NUNCA como texto sobre branco (falha WCAG). Para verde "texto-safe", usar `--success` (`#1F8F5C`). Texto sobre verde sempre `--brand-navy-deep` (`#0B1B3F`).
+
+**`--brand-white` `#FFFFFF` — Branco**
+
+Fundo principal de área de conteúdo do produto. Sempre. Texto sobre branco usa navy ou cinza escuro, nunca verde.
+
+---
+
+### Brand apoio (uso restrito, com regra explícita)
+
+**`--brand-navy-deep` `#0B1B3F` — Navy escuríssimo**
+
+Cor de apoio com 3 (e somente 3) usos autorizados:
+1. **Fundo de aplicação inteira em dark mode.** Quando o produto opera em modo escuro, a "página" usa essa cor como base. Não usar em light mode.
+2. **Texto sobre Patrimonium Green.** Quando há texto sobre fundo verde (`--brand-green`), o texto é navy escuríssimo (regra de contraste WCAG).
+3. **Hero institucional gigante.** Apenas landing page, capa, peça impressa de grande formato. Não usar em produto interno.
+
+**Proibido:**
+- ❌ Como fundo de sidebar (sidebar usa `--brand-blue`)
+- ❌ Como fundo de header / topbar
+- ❌ Como fundo de card principal
+- ❌ Como cor de botão primary
+- ❌ Como cor de texto de destaque
+- ❌ Em qualquer lugar onde "azul escuro genérico de SaaS" pareceria apropriado
+
+Se você está prestes a usar `--brand-navy-deep` e não é um dos 3 casos acima, **pare e troque para `--brand-blue`**.
+
+**`--brand-navy-soft` `#3059AF` — Navy médio**
+Raro. Apoio em data viz ou apenas como cor intermediária em gradient muito específico. Não usar sem razão clara.
+
+**`--brand-teal` `#0C998F` — Teal**
+Apoio para data viz (charts), accents secundários muito raros. Não usar em UI principal.
+
+**`--brand-cyan` `#1AFFFF` — Ciano luminoso**
+Raro. Reservado para hero institucional ou material gráfico. Não usar em produto.
+
+**`--brand-neutral-dark` `#3D3D3D` — Neutro escuro**
+Texto corpo principal. Mesma cor que `--neutral-strong`.
+
+---
 
 ### Neutros canônicos (3, consolidados)
 - `--neutral-surface` `#F7F8FB` — fundo de página, header de tabela, áreas neutras
@@ -62,10 +137,11 @@ Recursos complementares neste repositório:
 - `--pending` `#3730A3` / `--pending-bg` `#E0E7FF`
 
 ### Foreground (texto)
-- `--fg-1` (headings on light) — usar `--brand-navy-deep`
+- `--fg-1` (headings on light) — usar `--brand-blue` (NÃO `--brand-navy-deep`)
 - `--fg-2` (body) — usar `--neutral-strong`
 - `--fg-3` (secondary, metadados) — usar `--neutral-light`
-- `--fg-on-brand` (texto sobre azul/verde) — usar `#FFFFFF`
+- `--fg-on-brand` (texto sobre azul) — usar `#FFFFFF`
+- `--fg-on-green` (texto sobre verde) — usar `--brand-navy-deep`
 - `--fg-link` — usar `--brand-blue`
 
 ### Transparências autorizadas (não inventar outras)
@@ -75,11 +151,25 @@ Recursos complementares neste repositório:
 - `--menu-hover-on-dark` `rgba(255,255,255,0.08)` — hover sobre fundo escuro
 - `--menu-active-on-dark` `rgba(255,255,255,0.12)` — ativo sobre fundo escuro
 
-### Regras de cor
-- **Sem subtons.** Não criar `green-100`, `blue-50`, etc.
+---
+
+### Checklist de aplicação de cor (use antes de finalizar)
+
+Antes de entregar qualquer interface gerada, confirme:
+
+1. ☐ A cor primária visível é Patrimonium Blue `#1A3375`, não Navy escuríssimo `#0B1B3F`.
+2. ☐ A sidebar (se houver) usa Patrimonium Blue, não Navy escuríssimo.
+3. ☐ Existe pelo menos um elemento verde Patrimonium na tela (counter, dot, faixa ativa, badge, P-cápsula, botão affirmative).
+4. ☐ Botões primary são azul navy, botões affirmative são verde pill, ações destrutivas são vermelho.
+5. ☐ Texto sobre branco usa navy ou cinza escuro, nunca verde.
+6. ☐ Texto sobre verde usa navy escuríssimo (`--brand-navy-deep`).
+7. ☐ Navy escuríssimo só foi usado em dark mode, texto sobre verde, ou hero institucional. Se foi usado em sidebar/header/card de produto, está errado — trocar para Patrimonium Blue.
+
+### Regras gerais de cor
+- **Sem subtons.** Não criar `green-100`, `blue-50`, `navy-300`, etc.
 - **Para "versão clara" de semântica:** usar o token `-bg` existente.
-- **Verde nunca como texto sobre branco.** Para verde texto-safe, usar `--success` (`#1F8F5C`).
 - **Sem opacidade em texto/ícones para "atenuar".** Usar token de cor correto.
+- **Sem cor fora da paleta oficial**, mesmo "que pareça da marca". Se faltar uma cor, usar a mais próxima da paleta.
 
 ---
 
@@ -613,10 +703,12 @@ xl:  ≥ 1280px   12 colunas
 4. **Naming técnico em EN** (`--brand-blue`, `--space-4`), microcopy em PT-BR
 5. **Hit area mínima 44×44** em interativos
 6. **Sem emoji** em produto e institucional
-7. **Sem cor fora da paleta oficial**, mesmo "que pareça da marca"
-8. **R$, CNPJ, NFe, datas** sempre nos formatos canônicos da seção 12
-9. **Componente existe? Reusar.** Não desenhar paralelo.
-10. **Valor fora da escala (radius, spacing, fonte)?** Corrigir pro vizinho mais próximo da escala.
+7. **Cor primária visível = Patrimonium Blue `#1A3375`**, não Navy escuríssimo. Navy escuríssimo só em dark mode, texto sobre verde ou hero institucional.
+8. **Verde Patrimonium aparece em pelo menos 1 elemento por tela** (counter, dot, faixa ativa, badge, P-cápsula, affirmative).
+9. **Sem cor fora da paleta oficial**, mesmo "que pareça da marca"
+10. **R$, CNPJ, NFe, datas** sempre nos formatos canônicos da seção 12
+11. **Componente existe? Reusar.** Não desenhar paralelo.
+12. **Valor fora da escala (radius, spacing, fonte)?** Corrigir pro vizinho mais próximo da escala.
 
 ---
 
@@ -624,12 +716,22 @@ xl:  ≥ 1280px   12 colunas
 
 Antes de finalizar a UI gerada, verificar:
 
+**Cor (alta prioridade — erros recorrentes de IA):**
+- [ ] **Sidebar/header usa Patrimonium Blue `#1A3375`** (não Navy escuríssimo `#0B1B3F`)
+- [ ] **Pelo menos 1 elemento verde Patrimonium na tela** (counter, dot, faixa, badge, P-cápsula, ou botão affirmative)
+- [ ] Botões primary em navy, affirmative em verde pill, destrutivos em vermelho
+- [ ] Texto sobre verde é navy escuríssimo (`#0B1B3F`), nunca branco
+- [ ] Navy escuríssimo só foi usado em dark mode, texto sobre verde, ou hero institucional
+
+**Tokens e escalas:**
 - [ ] Todas as cores são tokens (não há HEX literal fora dos tokens da seção 2)
 - [ ] Todos os spacings são da escala (4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80)
 - [ ] Todos os radius são da escala (4 exceção, 8, 16, 32, 999)
 - [ ] Todas as fontes são RNS Sanz com pesos da escala (300-900)
 - [ ] Tamanhos tipográficos só dos 10 oficiais
 - [ ] Ícones Lucide stroke 1.5px com currentColor
+
+**Microcopy e estrutura:**
 - [ ] Microcopy em PT-BR canônico (CNPJ, NFe, R$, datas)
 - [ ] Hover e focus produzem mesma mudança visual
 - [ ] Hit areas ≥ 44×44 em interativos
