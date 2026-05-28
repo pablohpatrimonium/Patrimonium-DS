@@ -1,0 +1,341 @@
+/* =========================================================
+   Patrimonium · Design System — Colors & Type Tokens
+   Source of truth: Patrimonium_DS_Reviews + Manual de Marca
+   ========================================================= */
+
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: "RNS Sanz";
+  src: url("./fonts/RNSSanz-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "RNS Sanz";
+  src: url("./fonts/RNSSanz-Normal.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "RNS Sanz";
+  src: url("./fonts/RNSSanz-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "RNS Sanz";
+  src: url("./fonts/RNSSanz-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "RNS Sanz";
+  src: url("./fonts/RNSSanz-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "RNS Sanz";
+  src: url("./fonts/RNSSanz-ExtraBold.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "RNS Sanz";
+  src: url("./fonts/RNSSanz-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ============ BRAND COLORS — PRINCIPAIS (sagradas) ============ */
+  /* PDR 3.1 — 3 principais + 6 de apoio. Sem subtons funcionais. */
+  --brand-blue:        #1A3375;   /* Patrimonium Blue — primária */
+  --brand-green:       #00FCA8;   /* Patrimonium Green — primária */
+  --brand-white:       #FFFFFF;   /* Branco — primária */
+  /* alias retro-compat */
+  --brand-navy:        #1A3375;
+
+  /* ============ BRAND COLORS — APOIO ============ */
+  --brand-navy-deep:   #0B1B3F;   /* Navy escuríssimo — usar quando precisar de "escuro" no lugar de preto */
+  --brand-navy-soft:   #3059AF;   /* Navy médio */
+  --brand-teal:        #0C998F;   /* Teal */
+  --brand-cyan:        #1AFFFF;   /* Ciano luminoso */
+  --brand-neutral-dark:  #3D3D3D; /* Neutro escuro */
+
+  /* Compat aliases — não são cores de marca, apontam para tokens semânticos */
+  --brand-green-deep:  var(--brand-green);   /* sem subtons do verde */
+  --brand-green-text:  #1F8F5C;              /* === --success */
+
+  /* ============ NEUTRALS (consolidado · Auditoria 0.2.1) ============ */
+  /* Token canônico único. PDR: paleta de marca tem só `Neutro claro #C8C8CC`
+     e `Neutro escuro #3D3D3D` como neutros — sem intermediários funcionais.
+     `--neutral-line`, `--neutral-muted` e `--brand-neutral-light` foram
+     consolidados aqui e mantidos como aliases retro-compat. */
+  --neutral-light:     #C8C8CC;   /* borders, dividers, disabled fill, placeholders, dias adjacentes */
+  --neutral-surface:   #F7F8FB;   /* fundo de página, app shell, header de tabela */
+  --neutral-strong:    #3D3D3D;   /* texto corpo, ícones, labels */
+  --white:             #FFFFFF;
+  --bg:                #FFFFFF;
+  --black:             #000000;
+  /* Aliases retro-compat — todos resolvem para --neutral-light */
+  --neutral-line:      var(--neutral-light);
+  --neutral-muted:     var(--neutral-light);
+  --brand-neutral-light: var(--neutral-light);
+  --bg-soft:           var(--neutral-surface);
+  --bg-muted:          var(--neutral-light);
+  --line:              var(--neutral-light);
+  --line-strong:       var(--neutral-light);
+  --neutral-300:       var(--neutral-light);
+  --neutral-500:       var(--neutral-strong);
+  --neutral-700:       var(--neutral-strong);
+
+  /* ============ SEMANTIC (status) ============ */
+  --success:           #1F8F5C;
+  --success-bg:        #E6F7EF;   /* rgb(230,247,239) */
+  --warning:           #F5A623;   /* rgb(245,166,35) */
+  --warning-bg:        #FEF3C7;   /* rgb(254,243,199) */
+  --danger:            #B91C1C;   /* rgb(185,28,28) */
+  --danger-strong:     #871414;   /* rgb(135,20,20) */
+  --danger-bg:         #FEE2E2;   /* rgb(254,226,226) */
+  --info:              #1A3375;
+  --info-bg:           #E0E7FF;   /* rgb(224,231,255) */
+  --neutral:           #475569;   /* sem ação, arquivado, indisponível */
+  --neutral-bg:        #EEF2F6;
+  --pending:           #3730A3;   /* em fila, aguardando */
+  --pending-bg:        #E0E7FF;
+
+  /* Estados semânticos · pares -dark (cor cheia) e -bg-dark (fundo escuro)
+     Uso: dark mode. Texto sobre -bg-dark é sempre branco. v1.0.1 */
+  --success-dark:      #4FCB87;
+  --success-bg-dark:   #1A6E48;
+  --warning-dark:      #FFB84D;
+  --warning-bg-dark:   #8C5A0F;
+  --danger-dark:       #F08080;
+  --danger-bg-dark:    #8B2828;
+  --info-dark:         #95ADE3;
+  --info-bg-dark:      #2A4FA0;
+  --neutral-dark:      #8A95A8;
+  --neutral-bg-dark:   #3B4555;
+  --pending-dark:      #A99DEC;
+  --pending-bg-dark:   #4A3DA0;
+
+  /* ============ FOREGROUND TOKENS ============ */
+  /* v1.0.1 — headings em light usam brand-blue (não navy-deep).
+     Navy-deep fica reservado a fundos invertidos. */
+  --fg-1:              var(--brand-blue);   /* headings on light */
+  --fg-2:              var(--neutral-strong);    /* body */
+  --fg-3:              var(--neutral-muted);     /* secondary */
+  --fg-muted:          var(--neutral-muted);
+  --fg-on-brand:       #FFFFFF;
+  --fg-link:           var(--brand-navy);
+
+  /* ============ TYPOGRAPHY ============ */
+  --font-sans: "RNS Sanz", "Inter", system-ui, -apple-system, "Segoe UI",
+               Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "RNS Sanz", "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* code/mono — para CNPJ, valores tabulares, identificadores.
+     SEMPRE ativar font-variant-numeric: tabular-nums em colunas de valor. */
+  --fs-code: 13px; --lh-code: 1.5; --fw-code: 400;
+
+  /* Display — único nível. Voz da marca em volume máximo (heros, landing, capas).
+     Não usar dentro do produto. PDR 3.3. */
+  --fs-display: 56px;  --lh-display: 1.1;   --fw-display: 800;
+  --tracking-display: -0.02em;
+
+  /* Headings — product UI. PDR 3.3 */
+  --fs-h1: 40px;  --lh-h1: 1.1;   --fw-h1: 700;  --tracking-h1: -0.01em;
+  --fs-h2: 32px;  --lh-h2: 1.25;  --fw-h2: 700;  --tracking-h2: -0.01em;
+  --fs-h3: 24px;  --lh-h3: 1.25;  --fw-h3: 600;  --tracking-h3: 0;
+  --fs-h4: 20px;  --lh-h4: 1.4;   --fw-h4: 500;  --tracking-h4: 0;
+
+  /* Body — PDR 3.3 */
+  --fs-lg: 18px;  --lh-lg: 1.5;   --fw-lg: 400;
+  --fs-md: 16px;  --lh-md: 1.5;   --fw-md: 400;
+  --fs-sm: 14px;  --lh-sm: 1.5;   --fw-sm: 400;
+
+  /* Eyebrow — sobrelinha/rótulo acima de seção. CAIXA ALTA. */
+  --fs-eyebrow: 12px; --lh-eyebrow: 1.2; --fw-eyebrow: 700;
+  --tracking-eyebrow: 0.12em;
+
+  /* Caption — legenda, metadado, timestamp. CAIXA ALTA. */
+  --fs-caption: 12px; --lh-caption: 1.3; --fw-caption: 600;
+  --tracking-caption: 0.02em;
+
+  /* Aliases retro-compat */
+  --fs-xs: var(--fs-caption); --lh-xs: var(--lh-caption); --fw-xs: var(--fw-caption);
+  --fs-overline: var(--fs-eyebrow); --lh-overline: var(--lh-eyebrow); --fw-overline: var(--fw-eyebrow);
+  --tracking-overline: var(--tracking-eyebrow);
+
+  /* ============ SPACING (base 4px · 11 valores) ============ */
+  /* PDR 3.4 — numeração 1..11 é posição na escala, não pixels.
+     Preferenciais: 1,2,4,6,7,10. Exceções: 3,9,11. Raros (evitar): 5,8. */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;   /* exceção */
+  --space-4: 16px;
+  --space-5: 20px;   /* raro */
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;   /* raro */
+  --space-9: 48px;   /* exceção */
+  --space-10: 64px;
+  --space-11: 80px;  /* exceção */
+  /* Aliases retro-compat (não usar em código novo) */
+  --space-12: var(--space-9);
+  --space-16: var(--space-10);
+  --space-20: var(--space-11);
+  --space-24: 96px;
+
+  /* ============ RADII ============ */
+  /* PDR 3.5 — derivado de 15% da menor dimensão do logo. Saltos grandes (dobram a cada degrau). */
+  --radius-sm: 8px;    /* badges, chips, inputs, botões gerais */
+  --radius-md: 16px;   /* cards, modais, painéis */
+  --radius-lg: 32px;   /* hero, sheets, banners */
+  --radius-pill: 999px;/* botão affirmative, dots, logo */
+
+  /* ============ SHADOWS (3 níveis) ============ */
+  /* PDR 3.6 — elevation física. Luz vinda de cima, sem offset horizontal.
+     Cor-base rgba(15,23,42,X), nunca preto puro. Opacidade total ≤ 0.12.
+     shadow-2 e shadow-3 são compostas (2 layers) para parecer real. */
+  --shadow-1: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-2: 0 1px 2px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-3: 0 4px 8px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(15, 23, 42, 0.12);
+
+  /* ============ v2.0.0 · GRADIENTS OFICIAIS — atualizados v2.0.1 (5) ============ */
+  /* Mantidos da v2.0.0: */
+  --gradient-hero:         linear-gradient(135deg, #0B1B3F 0%, #1A3375 100%);
+  --gradient-brand-accent: linear-gradient(135deg, #1A3375 0%, #00FCA8 100%);
+  --gradient-data-accent:  linear-gradient(135deg, #1A3375 0%, #0C998F 100%);
+  /* Novos na v2.0.1 (light-mode-first): */
+  --gradient-soft-hero:    linear-gradient(135deg, #F7F8FB 0%, #E0E7FF 100%);
+  --gradient-accent-soft:  linear-gradient(135deg, #E0E7FF 0%, #E6F7EF 100%);
+
+  /* ============ v2.0.1 · GLASSMORPHISM (2 variantes) ============ */
+  /* DARK — uso sobre fundos escuros */
+  --glass-dark-blur:   blur(20px);
+  --glass-dark-bg:     rgba(11, 27, 63, 0.72);
+  --glass-dark-border: 0.5px solid rgba(255, 255, 255, 0.10);
+  --glass-dark-shadow: 0 4px 8px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(15, 23, 42, 0.12);
+  /* LIGHT — uso sobre fundos claros (cenário majoritário) */
+  --glass-light-blur:   blur(20px);
+  --glass-light-bg:     rgba(255, 255, 255, 0.68);
+  --glass-light-border: 0.5px solid rgba(15, 23, 42, 0.06);
+  --glass-light-shadow: 0 4px 8px rgba(15, 23, 42, 0.04), 0 16px 40px rgba(15, 23, 42, 0.06);
+  /* Aliases retro-compat v2.0.0 → v2.0.1 (mapeiam para variante dark) */
+  --glass-blur:   var(--glass-dark-blur);
+  --glass-bg:     var(--glass-dark-bg);
+  --glass-border: var(--glass-dark-border);
+  --glass-shadow: var(--glass-dark-shadow);
+
+  /* ============ v2.0.0 · CAMADAS DE SUPERFÍCIE ============ */
+  /* Dão nome semântico a combinações de cor + sombra por camada de profundidade.
+     Não introduzem cores novas — referenciam tokens existentes. */
+  /* Light · page → card → elevated */
+  --surface-light-page:            #F7F8FB;
+  --surface-light-card-bg:         #FFFFFF;
+  --surface-light-card-shadow:     0 1px 2px rgba(15, 23, 42, 0.04);
+  --surface-light-elevated-bg:     #FFFFFF;
+  --surface-light-elevated-shadow: 0 4px 8px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(15, 23, 42, 0.12);
+  /* Dark · shell → painel → elevated */
+  --surface-dark-shell:            #0B1B3F;
+  --surface-dark-painel-bg:        #1A3375;
+  --surface-dark-painel-shadow:    0 1px 2px rgba(15, 23, 42, 0.04);
+  --surface-dark-elevated-bg:      #1A3375;
+  --surface-dark-elevated-border:  0.5px solid rgba(255, 255, 255, 0.08);
+  --surface-dark-elevated-shadow:  0 4px 8px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(15, 23, 42, 0.12);
+
+  /* ============ TRANSPARÊNCIAS FUNCIONAIS ============ */
+  /* Opacidade NÃO é foundation pública. Os 3 tokens abaixo são as únicas
+     transparências autorizadas — cada um pertence a um componente. */
+
+  /* backdrop atrás de modais/drawers · navy #0F172A @ 45% (vive no Modal/Drawer) */
+  --backdrop-modal: rgba(15, 23, 42, 0.45);
+
+  /* anel de foco · navy @ 18% — herdado pelos componentes Button/Form/Tabs */
+  --focus-ring: 0 0 0 4px rgba(26, 51, 117, 0.18);
+  --shadow-focus: var(--focus-ring); /* alias retro-compat */
+
+  /* hover em item de sidebar/topbar invertido · branco @ 8% e @ 12% */
+  --menu-hover-on-dark:   rgba(255, 255, 255, 0.08);
+  --menu-active-on-dark:  rgba(255, 255, 255, 0.12);
+  /* hover em item de menu sobre fundo claro · navy @ 6% */
+  --menu-hover-on-light:  rgba(26, 51, 117, 0.06);
+  /* Aliases retro-compat */
+  --shadow-xs: var(--shadow-1);
+  --shadow-sm: var(--shadow-1);
+  --shadow-md: var(--shadow-2);
+  --shadow-lg: var(--shadow-3);
+
+  /* ============ BORDERS ============ */
+  --border-1: 1px solid var(--line);
+  --border-2: 1.5px solid var(--line); /* matches Lucide stroke spec */
+  --border-strong: 1px solid var(--brand-navy);
+
+  /* ============ MOTION ============ */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+
+  /* ============ LAYOUT ============ */
+  --container-max: 1280px;
+  --content-max: 880px;
+  --icon-stroke: 1.5px;
+}
+
+/* ============================================================================
+ * v2.0.0 · Glass fallback obrigatório.
+ * Browsers sem backdrop-filter recebem fundo sólido equivalente.
+ * ============================================================================ */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass-dark-bg:     #1A3375;
+    --glass-dark-border: 0.5px solid #3059AF;
+    --glass-light-bg:     #FFFFFF;
+    --glass-light-border: 0.5px solid rgba(15, 23, 42, 0.08);
+  }
+}
+
+/* =========================================================
+   Semantic HTML defaults
+   ========================================================= */
+
+html { font-family: var(--font-sans); color: var(--fg-2); background: var(--bg); }
+body { margin: 0; font: var(--fw-md) var(--fs-md)/var(--lh-md) var(--font-sans); color: var(--fg-2); }
+
+h1, .h1 { font: var(--fw-h1) var(--fs-h1)/var(--lh-h1) var(--font-display); color: var(--fg-1); margin: 0 0 var(--space-4); letter-spacing: var(--tracking-h1); }
+h2, .h2 { font: var(--fw-h2) var(--fs-h2)/var(--lh-h2) var(--font-display); color: var(--fg-1); margin: 0 0 var(--space-3); letter-spacing: var(--tracking-h2); }
+h3, .h3 { font: var(--fw-h3) var(--fs-h3)/var(--lh-h3) var(--font-display); color: var(--fg-1); margin: 0 0 var(--space-3); letter-spacing: var(--tracking-h3); }
+h4, .h4 { font: var(--fw-h4) var(--fs-h4)/var(--lh-h4) var(--font-display); color: var(--fg-1); margin: 0 0 var(--space-2); letter-spacing: var(--tracking-h4); }
+
+.display { font: var(--fw-display) var(--fs-display)/var(--lh-display) var(--font-display); letter-spacing: var(--tracking-display); color: var(--fg-1); }
+/* Aliases retro-compat — todos apontam para o único token Display */
+.display-xl, .display-lg, .display-md { font: var(--fw-display) var(--fs-display)/var(--lh-display) var(--font-display); letter-spacing: var(--tracking-display); color: var(--fg-1); }
+
+p   { font: var(--fw-md) var(--fs-md)/var(--lh-md) var(--font-sans); margin: 0 0 var(--space-3); color: var(--fg-2); text-wrap: pretty; }
+small, .text-sm { font-size: var(--fs-sm); line-height: var(--lh-sm); }
+.text-xs, .caption { font-size: var(--fs-caption); line-height: var(--lh-caption); font-weight: var(--fw-caption); letter-spacing: var(--tracking-caption); text-transform: uppercase; }
+.text-lg { font-size: var(--fs-lg); line-height: var(--lh-lg); }
+.eyebrow, .overline { font-size: var(--fs-eyebrow); line-height: var(--lh-eyebrow); font-weight: var(--fw-eyebrow); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--fg-3); }
+.mono { font-family: var(--font-mono); }
+.code { font: var(--fw-code) var(--fs-code)/var(--lh-code) var(--font-mono); font-variant-numeric: tabular-nums; }
+.tabular-nums, .num { font-variant-numeric: tabular-nums; }
+
+a { color: var(--fg-link); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--dur-base) var(--ease-std); }
+a:hover { border-bottom-color: currentColor; }
+
+hr { border: 0; border-top: var(--border-1); margin: var(--space-6) 0; }
+
+::selection { background: var(--brand-green); color: var(--brand-navy); }
